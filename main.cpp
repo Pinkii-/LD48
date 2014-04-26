@@ -1,11 +1,11 @@
 #include <Resources.hpp>
-#include <MyGame.hpp>
+#include <LD48.hpp>
 
 int main() {
     Resources::load();
-    MyGame mygame(sf::VideoMode::getFullscreenModes()[0].width,sf::VideoMode::getFullscreenModes()[0].height // Size of the window <width,height>
-            ,"MyGame" // Title of the window
-            ,sf::Style::Default); // Style of the window
+    LD48 mygame(sf::VideoMode::getFullscreenModes()[0].width,sf::VideoMode::getFullscreenModes()[0].height
+            ,"LD48"
+            ,sf::Style::Default);
     mygame.run();
     return 0;
 }

@@ -2,17 +2,17 @@
 #define MYGAME_H
 #include "Game.hpp"
 
-class MyGame : public Game {
+class LD48 : public Game {
 public:
-    MyGame(int scrwidth, int scrheight, std::string title, int style);
-    ~MyGame();
+    LD48(int scrwidth, int scrheight, std::string title, int style);
+    ~LD48();
     void update(float deltaTime);
     void draw();
     void processEvents();
-    void testPressed(sf::Event event);
-    void testReleased(sf::Event event);
+    void keyPressed(sf::Event event);
+    void keyReleased(sf::Event event);
 private:
-    //The components of the game
+
 };
 
 #endif // MYGAME_H

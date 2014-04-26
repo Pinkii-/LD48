@@ -1,36 +1,42 @@
 #include "LD48.hpp"
 
-MyGame::MyGame(int scrwidth, int scrheight, std::string title, int style)
+LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     : Game(scrwidth,scrheight,title,style) {
     //Create the components of the game and init them
 }
 
-MyGame::~MyGame() {}
+LD48::~LD48() {}
 
-void MyGame::update(float deltaTime){
+void LD48::update(float deltaTime){
     // Update the game
 }
 
-void MyGame::draw(){
+void LD48::draw(){
     // Draw the game
 }
 
-void MyGame::processEvents(){
+void LD48::processEvents(){
     sf::Event event;
     while (window.pollEvent(event)) {
         switch (event.type) {
         case sf::Event::Closed:
             window.close();
             break;
-            // Add more events to handle them.
         case sf::Event::KeyPressed:
-            KeyPressed(event);
+            keyPressed(event);
             break;
         case sf::Event::KeyReleased:
-            KeyReleased(event);
+            keyReleased(event);
         default:
             break;
         }
     }
 }
 
+void LD48::keyPressed(sf::Event event) {
+
+}
+
+void LD48::keyReleased(sf::Event event) {
+
+}
