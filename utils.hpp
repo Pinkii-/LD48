@@ -20,6 +20,8 @@
 #include <queue>
 #include <map>
 
+typedef std::vector<bool> VBool;
+
 enum powerUp {
     pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
 };
