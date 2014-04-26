@@ -1,9 +1,11 @@
 #include "Board.hpp"
+#include "LD48.hpp"
 
-Board::Board(LD48* g, int w) {
+Board::Board(){
+}
+
+Board::Board(LD48* g, int w){
     game = g;
-
-    pWindow = game->getWindow();
 
     height = pWindow->getSize().y - TOP_MARGIN;
     width = w;
@@ -11,11 +13,11 @@ Board::Board(LD48* g, int w) {
     collisionLayer.create(width, height, sf::Color(0,0,0));
     whiteImage.create(width, height, sf::Color(255,255,255));
 
-    bgDirt.setTexture(textureDirt);
-    bgTunnel.setTexture(textureTunnel);
+    bgDirt.setTexture(Resources::textureDirt);
+    bgTunnel.setTexture(Resources::textureTunnel);
 }
 
-inline sf::IntRect Board::getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
+inline sf::IntRect getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
     float playerSpriteWidth, playerSpriteHeight;
 
     if (current.y < prev.y) {
@@ -38,10 +40,11 @@ inline sf::IntRect Board::getProperRectangle(sf::Vector2f current, sf::Vector2f 
 void Board::init () {
     prevPlayerPos[0] = game->getPlayer(0)->getPosition();
     prevPlayerPos[1] = game->getPlayer(1)->getPosition();
+    pWindow = game->getWindow();
 }
 
 void Board::update() {
-    sf::Rect rectPlayerMovement[2];
+    sf::IntRect rectPlayerMovement[2];
 
     currPlayerPos[0] = game->getPlayer(0)->getPosition();
     currPlayerPos[1] = game->getPlayer(1)->getPosition();
@@ -59,19 +62,19 @@ void Board::update() {
 void Board::draw() {
     sf::Image tunnelTextImage;
 
-    tunnelTextImage = bgTunnel.getTexture().copyToImage();
+    tunnelTextImage = bgTunnel.getTexture()->copyToImage();
     collisionLayer.createMaskFromColor(sf::Color::White);
     tunnelTextImage.copy(collisionLayer,0,0,sf::IntRect(0, 0, collisionLayer.getSize().x, collisionLayer.getSize().y));
     tunnelTextImage.createMaskFromColor(sf::Color::Black);
-    textureTunnel.loadFromImage(tunnelTextImage, sf::IntRect(0, 0, tunnelTextImage.getSize().x, tunnelTextImage.getSize().y));
+    Resources::textureTunnel.loadFromImage(tunnelTextImage, sf::IntRect(0, 0, tunnelTextImage.getSize().x, tunnelTextImage.getSize().y));
 
-    bgTunnel.setTexture();
+//    bgTunnel.setTexture();
 
     pWindow->draw(bgDirt);
     pWindow->draw(bgTunnel);
 }
 
-boardType Board::getBoardType(sf::Vector2f pos, ) {
+boardType Board::getBoardType(sf::Vector2f pos) {
     //full digged blocked qtt_boardType
 
     if(pos.x > width || pos.x < 0 || pos.y < 0 || pos.y > height) {

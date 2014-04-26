@@ -15,7 +15,7 @@ class Player {
 
 		//Destructor
 		~Player();
-/*
+
 		//recieve deltatime
 		void update();
 
@@ -25,8 +25,8 @@ class Player {
 		//return the position
 		sf::Vector2f getPosition();
 		
-		setDeBuff(deBuff dB);
-		setPowerUp(powerUp pU);
+        void setDeBuff(deBuff dB);
+        void setPowerUp(powerUp pU);
 
 	private:
 		//Punter al pare (HAX)
@@ -38,7 +38,7 @@ class Player {
 		//deBuffs and powerUps of the player 
 		std::vector<bool> deBuffs;
 		std::vector<bool> powerUps;
-*/
+
 };
 
 

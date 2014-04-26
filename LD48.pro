@@ -10,14 +10,17 @@ SOURCES += main.cpp \
     LD48.cpp \
     Resources.cpp \
     utils.cpp \
+    Ui.cpp \
     Board.cpp \
     Player.cpp
+
 
 HEADERS += \
     Game.hpp \
     LD48.hpp \
     Resources.hpp \
     utils.hpp \
+    Ui.hpp \
     Board.hpp \
     Player.hpp
 
