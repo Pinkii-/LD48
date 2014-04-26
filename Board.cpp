@@ -6,8 +6,24 @@ Board::Board() {
     whiteImage = sf::Image.create(800,800,sf::Color(255,255,255));
 }
 
-sf::Rect getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
+inline sf::Rect getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
+    float playerSpriteWidth, playerSpriteHeight;
 
+    if (current.y < prev.y) {
+        return sf::Rect(current.x, current.y, playerSpriteWidth, prev.y + playerSpriteHeight - current.x);
+    }
+    else if (current.y > prev.y) {
+        return sf::Rect(prev.x, prev.y, playerSpriteWidth, current.y + playerSpriteHeight - prev.x);
+    }
+    else if (current.x < prev.x) {
+        return sf::Rect(current.x, current.y, prev.x + playerSpriteWidth - current.x, playerSpriteHeight);
+    }
+    else if (current.x > prev.x) {
+        return sf::Rect(prev.x, prev.y, current.x + playerSpriteWidth - prev.x, playerSpriteHeight);
+    }
+    else {
+        return sf::Rect(0,0,0,0);
+    }
 }
 
 void Board::init () {
