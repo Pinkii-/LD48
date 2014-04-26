@@ -21,12 +21,12 @@ Player::~Player() {
 // enum deBuff {
 //   dB_Speed, dB_Strength, dB_Phantom, qtt_deBuff
 // };
-
+/*
 //recieve deltatime
 void Player::update(){
 	
 }
 
 //draw the player
-void Player::draw();
+void Player::draw();*/
 

@@ -15,7 +15,7 @@ class Player {
 
 		//Destructor
 		~Player();
-
+/*
 		//recieve deltatime
 		void update();
 
@@ -38,7 +38,7 @@ class Player {
 		//deBuffs and powerUps of the player 
 		std::vector<bool> deBuffs;
 		std::vector<bool> powerUps;
-
+*/
 };
 
 
