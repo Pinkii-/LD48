@@ -2,31 +2,39 @@
 
 LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     : Game(scrwidth,scrheight,title,style)
-    , gameState(menu)
-    , ui(this,gameState){
+    , gameState(playing)
+    , ui(this){
+    ui.changeState(gameState);
+    init();
 }
 
 LD48::~LD48() {}
 
 void LD48::init() {
+    nPlayers = 2;
     players = std::vector<Player>(nPlayers);
     for (unsigned i = 0; i < players.size(); ++i) {
         sf::Vector2f pos(2*i,2);
-        //players[i] = Player(i,pos,this);
+        players[i] = Player(i,pos,this);
     }
     isKeyPressed = std::vector<dir>(nPlayers);
-    sf::Vector2f boardWidth;
-    //board = Board(this, boardWidth);
+    float boardWidth = 1000;
+    board = Board(this, boardWidth);
 }
 
 void LD48::update(float deltaTime){
-    //for (unsigned i = 0; i < players.size(); ++i) players[i].update(deltaTime);
-    board.update();
+    if (gameState == playing) {
+        for (unsigned i = 0; i < players.size(); ++i) players[i].update(deltaTime);
+        board.update();
+    }
 }
 
 void LD48::draw(){
-    //for (unsigned i = 0; i < players.size(); ++i) players[i].draw(window);
     board.draw();
+    if (gameState == playing) {
+        for (unsigned i = 0; i < players.size(); ++i) players[i].draw(window);
+    }
+    ui.draw();
 }
 
 void LD48::processEvents(){
@@ -76,6 +84,8 @@ void LD48::keyPressed(sf::Event event) {
     case sf::Keyboard::Right:
         isKeyPressed[1] = right;
         break;
+    case sf::Keyboard::P:
+        gameState = playing;
     default:
         break;
     }

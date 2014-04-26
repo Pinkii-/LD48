@@ -4,9 +4,7 @@
 Board::Board(){
 }
 
-Board::Board(LD48* g, int w){
-    game = g;
-
+Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
     height = pWindow->getSize().y - TOP_MARGIN;
     width = w;
 

@@ -22,10 +22,9 @@ Player::Player(int identifier, sf::Vector2f pos, LD48* p) {
 	digSpeed = speed*0.8;
 	walkSpeed = speed;
 	
-	if(!pTexture.loadFromFile("pics/sprites.png")) std::cout << "personatge Not Loaded " << std::endl;
-    spriteSize.x =  pTexture.getSize().x/4;
-    spriteSize.y =  pTexture.getSize().y/4;
-	player.setTexture(pTexture);
+    spriteSize.x =  Resources::player.getSize().x/4;
+    spriteSize.y =  Resources::player.getSize().y/4;
+    player.setTexture(Resources::player);
 }
 
 sf::Vector2f Player::getPosition(){
@@ -110,10 +109,10 @@ void Player::setPowerUp(powerUp pU, float time){
 }
 
 //draw the player
-void Player::draw(sf::RenderWindow* window){
+void Player::draw(sf::RenderWindow &window){
 	player.setTextureRect(sf::IntRect(spriteSource.x*spriteSize.x, 
 			spriteSource.y*spriteSize.y, spriteSize.x, spriteSize.y));
 	player.setPosition(position);
-	window->draw(player);
+    window.draw(player);
 }
 

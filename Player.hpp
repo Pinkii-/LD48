@@ -29,7 +29,7 @@ class Player {
 		~Player();
 
 		//draw the player
-        void draw(sf::RenderWindow* window);
+        void draw(sf::RenderWindow &window);
 
 		//set powerup or debuf
 		void setDeBuff(deBuff dB, float time);
