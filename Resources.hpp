@@ -7,6 +7,7 @@ public:
     static void load();
     static sf::Texture textureTunnel;
     static sf::Texture textureDirt;
+    static sf::Texture menuTexture;
     static sf::Font menuFont;
 };
 
