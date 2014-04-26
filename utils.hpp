@@ -20,5 +20,12 @@
 #include <queue>
 #include <map>
 
+enum powerUp {
+  pU_Speed, pU_Strength, pU_Phantom;
+};
+
+enum deBuff {
+  dB_Speed, dB_Strength, dB_Phantom;
+}
 
 #endif // UTILS_HPP
