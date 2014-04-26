@@ -1,10 +1,7 @@
 #include "Resources.hpp"
 
-
-sf::Texture     Resources::texture;
-sf::Font        Resources::font;
+sf::Font        Resources::menuFont;
 
 void Resources::load() {
-    texture.loadFromFile("resources/test1.png");
-    font.loadFromFile("resources/font.ttf");
+    menuFont.loadFromFile("resources/Call_me_maybe.ttf");
 }

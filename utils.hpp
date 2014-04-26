@@ -23,6 +23,10 @@
 typedef std::vector<bool> VBool;
 typedef std::vector<float> VFloat;
 
+enum state {
+    menu, playing
+};
+
 enum powerUp {
     pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
 };
