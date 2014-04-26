@@ -1,18 +1,21 @@
 #include "LD48.hpp"
 
 LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
-    : Game(scrwidth,scrheight,title,style) {
-    //Create the components of the game and init them
+    : Game(scrwidth,scrheight,title,style), board() {
+    players = std::vector<Player>(2);
+    isKeyPressed = std::vector<bool>(kPressed::qtt_keys);
 }
 
 LD48::~LD48() {}
 
 void LD48::update(float deltaTime){
-    // Update the game
+    for (unsigned i = 0; i < players.size(); ++i) players[i].update(deltaTime);
+    board.update();
 }
 
 void LD48::draw(){
-    // Draw the game
+    for (unsigned i = 0; i < players.size(); ++i) players[i].draw(window);
+    board.draw(window);
 }
 
 void LD48::processEvents(){
@@ -34,7 +37,7 @@ void LD48::processEvents(){
 }
 
 void LD48::keyPressed(sf::Event event) {
-
+    if (event.key.code == sf::Keyboard::Escape) window.close();
 }
 
 void LD48::keyReleased(sf::Event event) {

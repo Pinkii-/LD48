@@ -21,11 +21,15 @@
 #include <map>
 
 enum powerUp {
-  pU_Speed, pU_Strength, pU_Phantom;
+  pU_Speed, pU_Strength, pU_Phantom
 };
 
 enum deBuff {
-  dB_Speed, dB_Strength, dB_Phantom;
-}
+  dB_Speed, dB_Strength, dB_Phantom
+};
+
+enum kPressed {
+    a, d, w, s, left, right, up, down, qtt_keys
+};
 
 #endif // UTILS_HPP

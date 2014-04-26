@@ -12,7 +12,9 @@ public:
     void keyPressed(sf::Event event);
     void keyReleased(sf::Event event);
 private:
-
+    Board board;
+    std::vector<Player> players;
+    std::vector<bool>   isKeyPressed;
 };
 
 #endif // MYGAME_H
