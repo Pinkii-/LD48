@@ -5,18 +5,31 @@
 #include "utils.hpp"
 #include <SFML/Graphics.hpp>
 
+//                         sp   st
+const float dBdigged[2] = { 0.8,   1 };
+const float dBfull[2]   = {   1, 0.8 };
+
+//              		  N  S   E   W
+const int movx[4] = { 0,  0,  1, -1};
+const int movy[4] = {-1,  1,  0,  0};
+
+//                        sp    st   ph
+const float pUdigged[3] = {  1.2,   1,  1 };
+const float pUfull[3]   = {    1, 1.2,  1 };
+
 class LD48;
 class Player {
 
 	public:
 		//Constructor
-		Player();
+        Player();
+        Player(int identifier, sf::Vector2f pos, LD48* p);
 
 		//Destructor
 		~Player();
 
 		//draw the player
-		void draw();
+        void draw(sf::RenderWindow* window);
 
 		//set powerup or debuf
 		void setDeBuff(deBuff dB, float time);
@@ -36,6 +49,7 @@ class Player {
 		//VARIABLES
 		//number variables
 		int id;
+        float speed;
 		float digSpeed;
 		float walkSpeed;
 		float spriteTimeCounter;

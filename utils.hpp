@@ -42,4 +42,5 @@ enum dir {
 enum boardType {
     full, digged, blocked, qtt_boardType
 };
+
 #endif // UTILS_HPP
