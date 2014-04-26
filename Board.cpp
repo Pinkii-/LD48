@@ -68,7 +68,7 @@ void Board::draw() {
     tunnelTextImage.createMaskFromColor(sf::Color::Black);
     Resources::textureTunnel.loadFromImage(tunnelTextImage, sf::IntRect(0, 0, tunnelTextImage.getSize().x, tunnelTextImage.getSize().y));
 
-//    bgTunnel.setTexture();
+    bgTunnel.setTexture(Resources::textureTunnel);
 
     pWindow->draw(bgDirt);
     pWindow->draw(bgTunnel);

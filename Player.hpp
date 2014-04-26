@@ -6,7 +6,6 @@
 #include <SFML/Graphics.hpp>
 
 class LD48;
-
 class Player {
 
 	public:
@@ -16,28 +15,44 @@ class Player {
 		//Destructor
 		~Player();
 
-		//recieve deltatime
-		void update();
-
 		//draw the player
 		void draw();
 
+		//set powerup or debuf
+		void setDeBuff(deBuff dB, float time);
+        void setPowerUp(powerUp pU, float time);
+		
 		//return the position
 		sf::Vector2f getPosition();
-		
-        void setDeBuff(deBuff dB);
-        void setPowerUp(powerUp pU);
+
+		//recieve deltatime
+		void update(float deltaTime);
+
 
 	private:
-		//Punter al pare (HAX)
+		//FUNCTIONS
+		void updateTimes();
+
+		//VARIABLES
+		//number variables
+		int id;
+		float digSpeed;
+		float walkSpeed;
+		float spriteTimeCounter;
+		float time_between_sprites;
+
+		//special objects variables
 		LD48* pare;
+		sf::Clock timer;
+		sf::Sprite player;
+		sf::Texture pTexture;
 
-		//Position of the player
+		//vector and vector2 with float variables
+		VFloat deBuffs;
+		VFloat powerUps;
 		sf::Vector2f position;
-
-		//deBuffs and powerUps of the player 
-		std::vector<bool> deBuffs;
-		std::vector<bool> powerUps;
+		sf::Vector2f spriteSize;
+		sf::Vector2f spriteSource;
 
 };
 
