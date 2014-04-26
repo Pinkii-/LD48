@@ -1,9 +1,13 @@
 #include "Board.hpp"
 
-Board::Board() {
-    // Tamany temporal fins que el calculem
-    collisionLayer = sf::Image.create(800, 800, sf::Color(0,0,0));
-    whiteImage = sf::Image.create(800,800,sf::Color(255,255,255));
+Board::Board(sf::Window* pw, int w, int h) {
+    height = h;
+    width = w;
+
+    pWindow = pw;
+
+    collisionLayer = sf::Image.create(w, h, sf::Color(0,0,0));
+    whiteImage = sf::Image.create(w, h, sf::Color(255,255,255));
 }
 
 inline sf::Rect getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
@@ -48,5 +52,24 @@ void Board::update() {
 }
 
 void Board::draw() {
+    sf::Image tunnelTextImage;
 
+    tunnelTextImage = textureTunnel.copyToImage();
+}
+
+boardType Board::getBoardType(sf::Vector2f pos) {
+    //full digged blocked qtt_boardType
+
+    sf::Color pixelColor = collisionLayer.getPixel(pos.x, pos.y);
+
+    if(pos.x > width || pos.x < 0 || pos.y < 0 || pos.y > height) {
+        return blocked;
+    }
+
+    if(pixelColor == sf::Color::Black){
+        return full;
+    }
+    else if(pixelColor == sf::Color::White){
+        return digged;
+    }
 }
