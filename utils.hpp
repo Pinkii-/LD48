@@ -32,8 +32,7 @@ enum deBuff {
 };
 
 enum dir {
-    left, right, up, down, none
+    up, down, right, left, none
 };
-
 
 #endif // UTILS_HPP
