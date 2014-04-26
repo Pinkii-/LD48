@@ -30,6 +30,7 @@ class Player {
 		//recieve deltatime
 		void update(float deltaTime);
 
+
 	private:
 		//FUNCTIONS
 		void updateTimes();
@@ -54,6 +55,10 @@ class Player {
 		sf::Vector2f position;
 		sf::Vector2f spriteSize;
 		sf::Vector2f spriteSource;
+
+		//deBuffs and powerUps of the player 
+		std::vector<bool> deBuffs;
+		std::vector<bool> powerUps;
 
 };
 

@@ -20,12 +20,26 @@
 #include <queue>
 #include <map>
 
+typedef std::vector<bool> VBool;
+typedef std::vector<float> VFloat;
+
+enum state {
+    menu, playing
+};
+
 enum powerUp {
-  pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
+    pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
 };
-
+ 
 enum deBuff {
-  dB_Speed, dB_Strength, dB_Phantom, qtt_deBuff
+  dB_Speed, dB_Strength, qtt_deBuff
 };
 
+enum dir {
+    up, down, right, left, none
+};
+
+enum boardType {
+    full, digged, blocked, qtt_boardType
+};
 #endif // UTILS_HPP
