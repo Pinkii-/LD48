@@ -2,8 +2,7 @@
 
 LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     : Game(scrwidth,scrheight,title,style)
-    , players(std::vector<Player>(2))
-    , isKeyPressed(std::vector<dir>(2)){
+    , state{
 }
 
 LD48::~LD48() {}
@@ -22,7 +21,7 @@ void LD48::update(float deltaTime){
 
 void LD48::draw(){
     for (unsigned i = 0; i < players.size(); ++i) players[i].draw(window);
-    board.draw(window);
+    board.draw();
 }
 
 void LD48::processEvents(){
@@ -44,10 +43,71 @@ void LD48::processEvents(){
 }
 
 void LD48::keyPressed(sf::Event event) {
-    if (event.key.code == sf::Keyboard::Escape) window.close();
-    if (event.key.code == sf::Keyboard::A) isKeyPressed =
+    switch (event.key.code) {
+    case sf::Keyboard::Escape:
+        window.close();
+        break;
+    case sf::Keyboard::A:
+        isKeyPressed[0] = left;
+        break;
+    case sf::Keyboard::W:
+        isKeyPressed[0] = up;
+        break;
+    case sf::Keyboard::S:
+        isKeyPressed[0] = down;
+        break;
+    case sf::Keyboard::D:
+        isKeyPressed[0] = right;
+        break;
+    case sf::Keyboard::Left:
+        isKeyPressed[1] = left;
+        break;
+    case sf::Keyboard::Up:
+        isKeyPressed[1] = up;
+        break;
+    case sf::Keyboard::Down:
+        isKeyPressed[1] = down;
+        break;
+    case sf::Keyboard::Right:
+        isKeyPressed[1] = right;
+        break;
+    default:
+        break;
+    }
 }
 
 void LD48::keyReleased(sf::Event event) {
-
+    switch (event.key.code) {
+    case sf::Keyboard::A:
+        if(isKeyPressed[0] == left) isKeyPressed[0] = none;
+        break;
+    case sf::Keyboard::W:
+        if(isKeyPressed[0] == up) isKeyPressed[0] = none;
+        break;
+    case sf::Keyboard::S:
+        if(isKeyPressed[0] == down) isKeyPressed[0] = none;
+        break;
+    case sf::Keyboard::D:
+        if(isKeyPressed[0] == right) isKeyPressed[0] = none;
+        break;
+    case sf::Keyboard::Left:
+        if(isKeyPressed[1] == left) isKeyPressed[1] = none;
+        break;
+    case sf::Keyboard::Up:
+        if(isKeyPressed[1] == up) isKeyPressed[1] = none;
+        break;
+    case sf::Keyboard::Down:
+        if(isKeyPressed[1] == down) isKeyPressed[1] = none;
+        break;
+    case sf::Keyboard::Right:
+        if(isKeyPressed[1] == right) isKeyPressed[1] = none;
+        break;
+    default:
+        break;
+    }
 }
+
+dir LD48::getDirection(int i) {
+    return isKeyPressed[i];
+}
+

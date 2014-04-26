@@ -5,10 +5,9 @@
 class Resources {
 public:
     static void load();
-    static sf::Texture texture;
-    static sf::Font font;
     static sf::Texture textureTunnel;
     static sf::Texture textureDirt;
+    static sf::Font menuFont;
 };
 
 #endif // RESOURCES_HPP
