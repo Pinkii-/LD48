@@ -23,11 +23,16 @@
 typedef std::vector<bool> VBool;
 
 enum powerUp {
-  pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
+    pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
 };
+
 
 enum deBuff {
   dB_Speed, dB_Strength, dB_Phantom, qtt_deBuff
+};
+
+enum dir {
+    up, down, right, left, none
 };
 
 #endif // UTILS_HPP
