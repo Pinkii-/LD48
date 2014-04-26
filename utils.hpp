@@ -21,11 +21,11 @@
 #include <map>
 
 enum powerUp {
-  pU_Speed, pU_Strength, pU_Phantom;
+  pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
 };
 
 enum deBuff {
-  dB_Speed, dB_Strength, dB_Phantom;
-}
+  dB_Speed, dB_Strength, dB_Phantom, qtt_deBuff
+};
 
 #endif // UTILS_HPP
