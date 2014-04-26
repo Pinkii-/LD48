@@ -1,4 +1,4 @@
-#include "board.h"
+#include "Board.hpp"
 
 Board::Board() {
     // Tamany temporal fins que el calculem
@@ -9,6 +9,8 @@ Board::Board() {
 void Update() {
     currPlayerPos[0] = game->getPlayer(0)->getPosition();
     currPlayerPos[1] = game->getPlayer(1)->getPosition();
+
+    sf::Rect rect
 
     prevPlayerPos[0] = currPlayerPos[0];
     prevPlayerPos[1] = currPlayerPos[1];
