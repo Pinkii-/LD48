@@ -13,7 +13,6 @@ void Game::run() {
     srand(time(0));
     while(window.isOpen()) {
         float deltaTime = c.restart().asSeconds();
-
         processEvents();
         update(deltaTime);
         render();

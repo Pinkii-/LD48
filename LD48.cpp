@@ -1,15 +1,16 @@
 #include "LD48.hpp"
 
 LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
-    : Game(scrwidth,scrheight,title,style), board() {
-    players = std::vector<Player>(2);
-    isKeyPressed = std::vector<dir>(2);
+    : Game(scrwidth,scrheight,title,style)
+    , players(std::vector<Player>(2))
+    , isKeyPressed(std::vector<dir>(2)){
 }
 
 LD48::~LD48() {}
 
 void LD48::init() {
     for (unsigned i = 0; i < players.size(); ++i) {
+        sf::Vector2f pos(2*i,2);
         players[i] = Player(i,pos,this);
     }
 }
@@ -44,6 +45,7 @@ void LD48::processEvents(){
 
 void LD48::keyPressed(sf::Event event) {
     if (event.key.code == sf::Keyboard::Escape) window.close();
+    if (event.key.code == sf::Keyboard::A) isKeyPressed =
 }
 
 void LD48::keyReleased(sf::Event event) {
