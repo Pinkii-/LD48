@@ -8,8 +8,8 @@ sf::Texture     Resources::player;
 sf::Font        Resources::menuFont;
 
 void Resources::load() {
-    textureTunnel.loadFromFile("resources/dirt2.png");
-    textureDirt.loadFromFile("resources/dirt.png");
+    textureTunnel.loadFromFile("resources/dirt.png");
+    textureDirt.loadFromFile("resources/dirt2.png");
     menuTexture.loadFromFile("resources/otono-bosque-hojas.jpg");
     playingTexture.loadFromFile("resources/playingTexture.png");
     player.loadFromFile("resources/sprite.png");
