@@ -25,6 +25,7 @@ Player::Player(int identifier, sf::Vector2f pos, LD48* p) {
     spriteSize.x =  Resources::player.getSize().x/4;
     spriteSize.y =  Resources::player.getSize().y/4;
     player.setTexture(Resources::player);
+    player.setScale(spriteSize.x/pare->getWindow()->getSize().x*2, spriteSize.x/pare->getWindow()->getSize().x*2);
 }
 
 sf::Vector2f Player::getPosition(){

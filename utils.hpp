@@ -32,7 +32,11 @@ enum powerUp {
 };
  
 enum deBuff {
-  dB_Speed, dB_Strength, qtt_deBuff
+    dB_Speed, dB_Strength, qtt_deBuff
+};
+
+enum pointObject {
+    pO_one, pO_two, pO_three, qtt_pointObject
 };
 
 enum dir {
