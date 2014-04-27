@@ -1,61 +1,54 @@
 /******************************Player.cpp**********************************/
 #include "Player.hpp"
 #include "LD48.hpp"
+#include "Collectible.hpp"
 
-Player::Player() {
+#include<iostream>
+using namespace std;
 
-}
+
 //Constructor
-Player::Player(int identifier, sf::Vector2f pos, LD48* p) {
+Player::Player(int identifier, LD48* p) : Object(p, sf::Vector2f(15, 15), Resources::player, sf::Vector2i(4, 4))
+{
 
-	pare = p;
-	position = pos;
 	id = identifier;
-	deBuff qttdB = qtt_deBuff;
-    powerUp qttpU = qtt_powerUp;
-	deBuffs = VFloat(qttdB, false);
-	powerUps = VFloat(qttpU, false);
-	spriteSource.x = spriteSource.y = 0.0;
-    /***SPEED VALUE***/	speed = 180;
+    buffs = VFloat(qtt_buff, 0);
+
+    /***SPEED VALUE***/
+    speed = 180;
 	time_between_sprites = 0.09;
 	spriteTimeCounter = 0.0;
     digSpeed = speed*0.4;
 	walkSpeed = speed;
 	
-    spriteSize.x =  Resources::player.getSize().x/4;
-    spriteSize.y =  Resources::player.getSize().y/4;
-    player.setTexture(Resources::player);
-    player.setScale(spriteSize.x/pare->getWindow()->getSize().x*2, spriteSize.x/pare->getWindow()->getSize().x*2);
+
+    receivesCollisions = true;
 }
 
-sf::Vector2f Player::getPosition(){
-	return position;
-}
-//Destructor
-Player::~Player() {
 
-}
 
-void Player::updateTimes(){
-    float time = timer.restart().asSeconds();
-	for(int i = 0; i < deBuffs.size(); ++i){
-		if(deBuffs[i] > 0) {
-			if(deBuffs[i] <= time) deBuffs[i] = 0;
-			else deBuffs[i] -= time;
-		}
-	}
-	for(int i = 0; i < powerUps.size(); ++i){
-		if(powerUps[i] > 0) {
-			if(powerUps[i] <= time) powerUps[i] = 0;
-			else powerUps[i] -= time;
-		}
-	}
+void Player::collidedWith(Object *b)
+{
+    Collectible* c = dynamic_cast<Collectible*> (b);
+    if(c)
+    {
+        if(c->type < qtt_buff)
+            setBuff(c->type, 3);
+        else
+        {
+            //blabla
+        }
+        b->dead = true;
+    }
 }
 
 //Update function
 void Player::update(float deltaTime){
-	
-	dir direction = pare->getDirection(id);
+
+    for(int i = 0; i < buffs.size(); ++i)
+        buffs[i] -= deltaTime;
+
+    dir direction = game->getDirection(id);
     float actSpeed = speed;
 
 	spriteTimeCounter += deltaTime;
@@ -64,60 +57,35 @@ void Player::update(float deltaTime){
 		sf::Vector2f desti;
         desti.x = position.x + digSpeed*movx[direction]*deltaTime;
         desti.y = position.y + digSpeed*movy[direction]*deltaTime;
-        boardType bT = pare->getBoard()->getBoardType(desti);
+        boardType bT = game->getBoard()->getBoardType(desti);
 
 		if(bT == digged) {
             actSpeed = walkSpeed;
-			for(int i = 0; i < powerUps.size(); ++i){
-                if(powerUps[i] > 0) actSpeed *= pUdigged[(int)powerUps[i]];
-			}
-			for(int i = 0; i < deBuffs.size(); ++i){
-                if(powerUps[i] > 0) actSpeed *= dBdigged[(int)powerUps[i]];
-            }
+            for(int i = 0; i < buffs.size(); ++i)
+                if(buffs[i] > 0) actSpeed *= bDigged[i];
 		}
 		else if(bT == full) {
             actSpeed = digSpeed;
-			for(int i = 0; i < powerUps.size(); ++i){
-                if(powerUps[i] > 0) actSpeed *= pUfull[(int)powerUps[i]];
-            }
-			for(int i = 0; i < deBuffs.size(); ++i){
-                if(powerUps[i] > 0) actSpeed *= dBfull[(int)powerUps[i]];
-			}
+            for(int i = 0; i < buffs.size(); ++i)
+                if(buffs[i] > 0) actSpeed *= bFull[i];
 		}
 		else actSpeed = 0;
-		//Set value to movement variables and update spritesource
-        if(spriteSource.y == direction){
-            position.x += actSpeed*movx[direction]*deltaTime;
-            position.y += actSpeed*movy[direction]*deltaTime;
-		}
-        else spriteSource.y = direction;
-		if (spriteTimeCounter >= time_between_sprites){
+
+        position.x += actSpeed*movx[direction]*deltaTime;
+        position.y += actSpeed*movy[direction]*deltaTime;
+
+        spriteNum.y = direction;
+        if (spriteTimeCounter >= time_between_sprites){
 			spriteTimeCounter = 0;
-			++spriteSource.x;
-		}
+            ++spriteNum.x;
+            //Checking the sprite sources to be ok
+            if(spriteNum.x >= 4) spriteNum.x = 0;
+        }
 	}
-    updateTimes();
-	//Checking the sprite sources to be ok
-	if(spriteSource.x >= 4) spriteSource.x = 0;
 }
 
-void Player::setDeBuff(deBuff dB, float time){
-	deBuffs[dB] = time;
+void Player::setBuff(collectible b, float time){
+    buffs[b] = time;
 }
 
-void Player::setPowerUp(powerUp pU, float time){
-	powerUps[pU] = time;
-}
-
-//draw the player
-void Player::draw(sf::RenderWindow &window){
-	player.setTextureRect(sf::IntRect(spriteSource.x*spriteSize.x, 
-			spriteSource.y*spriteSize.y, spriteSize.x, spriteSize.y));
-	player.setPosition(position);
-    window.draw(player);
-}
-
-sf::Vector2f Player::getSize() {
-    return spriteSize;
-}
 

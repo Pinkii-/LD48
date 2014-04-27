@@ -4,51 +4,30 @@
 
 #include "utils.hpp"
 #include <SFML/Graphics.hpp>
-
-//                         sp   st
-const float dBdigged[2] = { 0.8,   1 };
-const float dBfull[2]   = {   1, 0.8 };
-
+#include "Object.hpp"
 //              		  N  S   E   W
 const int movx[4] = { 0,  0,  1, -1};
 const int movy[4] = {-1,  1,  0,  0};
 
-//                        sp    st   ph
-const float pUdigged[3] = {  1.2,   1,  1 };
-const float pUfull[3]   = {    1, 1.2,  1 };
-
+//                        sp    st   ph    sp    st
+const float bDigged[] = {  3,   1,  1,  0.1,   1 };
+const float bFull[]   = {    1, 3,  1,    1, 0.1 };
 
 class LD48;
-class Player {
+
+class Player : public Object {
 
 	public:
 		//Constructor
-        Player();
-        Player(int identifier, sf::Vector2f pos, LD48* p);
+        Player(int identifier, LD48* p);
 
-		//Destructor
-		~Player();
-
-		//draw the player
-        void draw(sf::RenderWindow &window);
-
+        //recieve deltatime
+        virtual void update(float deltaTime);
+        virtual void collidedWith(Object *b);
 		//set powerup or debuf
-		void setDeBuff(deBuff dB, float time);
-        void setPowerUp(powerUp pU, float time);
-		
-		//return the position
-		sf::Vector2f getPosition();
-
-		//recieve deltatime
-		void update(float deltaTime);
-
-        //get the size of the sprite
-        sf::Vector2f getSize();
-
+        void setBuff(collectible b, float time);
 
 	private:
-		//FUNCTIONS
-		void updateTimes();
 
 		//VARIABLES
 		//number variables
@@ -59,19 +38,8 @@ class Player {
 		float spriteTimeCounter;
 		float time_between_sprites;
 
-		//special objects variables
-		LD48* pare;
-		sf::Clock timer;
-		sf::Sprite player;
-		sf::Texture pTexture;
-
 		//vector and vector2 with float variables
-		VFloat deBuffs;
-		VFloat powerUps;
-		sf::Vector2f position;
-		sf::Vector2f spriteSize;
-		sf::Vector2f spriteSource;
-
+        VFloat buffs;
 };
 
 

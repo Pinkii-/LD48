@@ -30,16 +30,10 @@ enum state {
     menu, help, options, playing
 };
 
-enum powerUp {
-    pU_Speed, pU_Strength, pU_Phantom, qtt_powerUp
-};
- 
-enum deBuff {
-    dB_Speed, dB_Strength, qtt_deBuff
-};
-
-enum pointObject {
-    pO_one, pO_two, pO_three, qtt_pointObject
+enum collectible {
+    pU_Speed, pU_Strength, pU_Phantom,
+    dB_Speed, dB_Strength, qtt_buff,
+    pO_one, pO_two, pO_three, qtt_collectible
 };
 
 enum dir {

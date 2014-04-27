@@ -1,4 +1,6 @@
 #include "LD48.hpp"
+#include "Object.hpp"
+#include "Collectible.hpp"
 
 LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     : Game(scrwidth,scrheight,title,style)
@@ -10,14 +12,21 @@ LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
 
 LD48::~LD48() {}
 
+
+void LD48::addObject(Object* obj)
+{
+    objects.push_back(obj);
+}
+
 void LD48::init(int nPlayer) {
     ui.changeState(playing);
     gameState = playing;
     nPlayers = nPlayer;
-    players = std::vector<Player>(nPlayers);
-    for (unsigned i = 0; i < players.size(); ++i) {
-        sf::Vector2f pos(800,230*(i+1));
-        players[i] = Player(i,pos,this);
+
+    for (unsigned i = 0; i < 2; ++i) {
+        Player* p = new Player(i, this);
+        p->position = sf::Vector2f (800,230*(i+1));
+        addObject(p);
     }
     isKeyPressed = std::vector<dir>(nPlayers);
     float boardWidth = 800;
@@ -26,21 +35,52 @@ void LD48::init(int nPlayer) {
 
 void LD48::update(float deltaTime){
     if (gameState == playing) {
-        for (unsigned i = 0; i < players.size(); ++i) players[i].update(deltaTime);
+
+        for(std::list<Object*>::iterator it = objects.begin(); it != objects.end(); it++)
+        {
+            (*it)->update(deltaTime);
+            if( (*it)->receivesCollisions)
+                for(std::list<Object*>::iterator it2 = objects.begin(); it2 != objects.end(); it2++)
+                    if(*it != *it2 && (*it)->collidesWith(*it2))
+                        (*it)->collidedWith(*it2);
+        }
+
+        for(std::list<Object*>::iterator it = objects.begin(); it != objects.end();)
+        {
+            if((*it)->dead)
+            {
+                std::list<Object*>::iterator it2 = it;
+                it2++;
+                objects.erase(it);
+                it = it2;
+            }
+            else
+                it++;
+        }
+
         board.update();
 
         int randSpawns = rand()%100;
-        if(randSpawns < 1) board.SpawnDebuff();
-        else if(randSpawns < 2) board.SpawnPowerUp();
-        else if(randSpawns < 5) board.SpawnPointObject(randSpawns - 1);
+        if(randSpawns < 1) spawnCollectible((rand()%2==0) ? dB_Speed : dB_Strength);
+        else if(randSpawns < 2) spawnCollectible((rand()%2==0) ? pU_Speed : pU_Strength);
+        else if(randSpawns < 5) spawnCollectible(collectible(pO_one + (rand()%3)));
     }
+}
+
+void LD48::spawnCollectible(collectible type)
+{
+    int x = rand()%800 + board.horOffset;
+    int y = rand()%800 + TOP_MARGIN;
+
+    addObject(new Collectible(this, type, sf::Vector2f(x, y)));
 }
 
 void LD48::draw(){
     ui.draw();
     if (gameState == playing) {
         board.draw();
-        for (unsigned i = 0; i < players.size(); ++i) players[i].draw(window);
+        for(std::list<Object*>::iterator it = objects.begin(); it != objects.end(); it++)
+            (*it)->draw();
     }
 }
 
@@ -172,7 +212,15 @@ Board* LD48::getBoard() {
 }
 
 Player* LD48::getPlayer(int id){
-    return &players[id];
+
+    //TODO FIX HACK
+    for(std::list<Object*>::iterator it = objects.begin(); it != objects.end(); it++)
+    {
+        if(id == 0)
+            return (Player*) *it;
+        id--;
+    }
+    return NULL;
 }
 
 sf::RenderWindow* LD48::getWindow() {

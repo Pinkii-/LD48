@@ -12,7 +12,9 @@ SOURCES += main.cpp \
     utils.cpp \
     Ui.cpp \
     Board.cpp \
-    Player.cpp
+    Player.cpp \
+    Object.cpp \
+    Collectible.cpp
 
 
 HEADERS += \
@@ -22,5 +24,7 @@ HEADERS += \
     utils.hpp \
     Ui.hpp \
     Board.hpp \
-    Player.hpp
+    Player.hpp \
+    Object.hpp \
+    Collectible.hpp
 

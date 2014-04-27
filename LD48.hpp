@@ -5,6 +5,8 @@
 #include "Board.hpp"
 #include "Ui.hpp"
 
+class Object;
+class Player;
 class LD48 : public Game {
 public:
     LD48(int scrwidth, int scrheight, std::string title, int style);
@@ -21,11 +23,15 @@ public:
     Board* getBoard();
     Player* getPlayer(int id);
     sf::RenderWindow* getWindow();
+    void addObject(Object* obj);
+    void spawnCollectible(collectible type);
 private:
     state gameState;
     Ui ui;
     Board board;
-    std::vector<Player> players;
+
+    std::list<Object*> objects;
+
     std::vector<dir> isKeyPressed;
     int nPlayers;
 };
