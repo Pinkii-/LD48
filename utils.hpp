@@ -22,7 +22,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
-
+const int N_STARTING_OBJECTS = 5;
 typedef std::vector<bool> VBool;
 typedef std::vector<float> VFloat;
 
@@ -30,6 +30,8 @@ enum state {
     menu, help, options, playing
 };
 
+// Per afegir un debuff, afegirlo despres del dB_speed o es
+// trenca massa <3
 enum collectible {
     pU_Speed, pU_Strength, pU_Phantom,
     dB_Speed, dB_Strength, qtt_buff,

@@ -20,6 +20,7 @@ Player::Player(int identifier, LD48* p) : Object(p, sf::Vector2f(15, 15), Resour
 	spriteTimeCounter = 0.0;
     digSpeed = speed*0.4;
 	walkSpeed = speed;
+    points = 0;
 	
 
     receivesCollisions = true;
@@ -32,11 +33,20 @@ void Player::collidedWith(Object *b)
     Collectible* c = dynamic_cast<Collectible*> (b);
     if(c)
     {
-        if(c->type < qtt_buff)
+        if(c->type < dB_Speed)
             setBuff(c->type, 3);
+        else if(c->type < qtt_buff)
+        {
+            for(int i = 0; i < game->getNplayer(); i++)
+            {
+                if (i != id)
+                    game->getPlayer(i)->setBuff(c->type, 3);
+            }
+        }
         else
         {
-            //blabla
+            points += c->type - qtt_buff;
+            std::cout << points << std::endl;
         }
         b->dead = true;
     }

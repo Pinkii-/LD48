@@ -32,6 +32,7 @@ class Player : public Object {
 		//VARIABLES
 		//number variables
 		int id;
+        int points;
         float speed;
 		float digSpeed;
 		float walkSpeed;

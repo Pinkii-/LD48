@@ -22,6 +22,7 @@ void LD48::init(int nPlayer) {
     ui.changeState(playing);
     gameState = playing;
     nPlayers = nPlayer;
+    spawnTimer = rand()%2 + 3;;
 
     for (unsigned i = 0; i < 2; ++i) {
         Player* p = new Player(i, this);
@@ -37,6 +38,9 @@ void LD48::init(int nPlayer) {
 
     float boardWidth = 800;
     board = Board(this, boardWidth);
+
+    for(int i = 0; i < N_STARTING_OBJECTS; i++)
+        spawnRandomCollectible();
 }
 
 void LD48::update(float deltaTime){
@@ -66,10 +70,12 @@ void LD48::update(float deltaTime){
 
         board.update();
 
-        int randSpawns = rand()%100;
-        if(randSpawns < 1) spawnCollectible((rand()%2==0) ? dB_Speed : dB_Strength);
-        else if(randSpawns < 2) spawnCollectible((rand()%2==0) ? pU_Speed : pU_Strength);
-        else if(randSpawns < 5) spawnCollectible(collectible(pO_one + (rand()%3)));
+        spawnTimer -= deltaTime;
+        if(spawnTimer <= 0)
+        {
+            spawnRandomCollectible();
+            spawnTimer = rand()%2 + 3;
+        }
     }
 }
 
@@ -79,6 +85,14 @@ void LD48::spawnCollectible(collectible type)
     int y = rand()%800 + TOP_MARGIN;
 
     addObject(new Collectible(this, type, sf::Vector2f(x, y)));
+}
+
+void LD48::spawnRandomCollectible()
+{
+    int randSpawns = rand()%5;
+    if(randSpawns < 1) spawnCollectible((rand()%2==0) ? dB_Speed : dB_Strength);
+    else if(randSpawns < 2) spawnCollectible((rand()%2==0) ? pU_Speed : pU_Strength);
+    else if(randSpawns < 5) spawnCollectible(collectible(pO_one + (rand()%3)));
 }
 
 void LD48::draw(){
@@ -236,3 +250,5 @@ sf::RenderWindow* LD48::getWindow() {
 int LD48::getNplayer(){
     return nPlayers;
 }
+
+

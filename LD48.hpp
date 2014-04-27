@@ -25,6 +25,7 @@ public:
     sf::RenderWindow* getWindow();
     void addObject(Object* obj);
     void spawnCollectible(collectible type);
+    void spawnRandomCollectible();
 private:
     state gameState;
     Ui ui;
@@ -34,6 +35,7 @@ private:
 
     std::vector<dir> isKeyPressed;
     int nPlayers;
+    float spawnTimer;
 };
 
 #endif // MYGAME_H
