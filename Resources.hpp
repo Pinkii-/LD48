@@ -10,6 +10,7 @@ public:
     static sf::Texture menuTexture;
     static sf::Texture playingTexture;
     static sf::Texture player;
+    static sf::Texture rodones;
     static sf::Font menuFont;
 };
 
