@@ -22,8 +22,11 @@ private:
     int height;
     int width;
 
+    int horOffset;
     sf::Image collisionLayer;
     sf::Image whiteImage;
+
+    sf::Texture TunnelMask;
 
     sf::Sprite bgDirt;
     sf::Sprite bgTunnel;
@@ -32,6 +35,8 @@ private:
     sf::Vector2f prevPlayerPos[2];
 
     sf::RenderWindow* pWindow;
+
+    sf::IntRect getProperRectangle(sf::Vector2f current, sf::Vector2f prev);
 };
 
 #endif // BOARD_H

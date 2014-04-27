@@ -41,6 +41,9 @@ class Player {
 		//recieve deltatime
 		void update(float deltaTime);
 
+        //get the size of the sprite
+        sf::Vector2f getSize();
+
 
 	private:
 		//FUNCTIONS

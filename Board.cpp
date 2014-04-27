@@ -8,15 +8,25 @@ Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
     height = pWindow->getSize().y - TOP_MARGIN;
     width = w;
 
-    collisionLayer.create(width, height, sf::Color(0,0,0));
-    whiteImage.create(width, height, sf::Color(255,255,255));
+    collisionLayer.create(width, height, sf::Color::Black);
+    whiteImage.create(width, height, sf::Color::White);
+
+    TunnelMask = sf::Texture(Resources::textureTunnel);
 
     bgDirt.setTexture(Resources::textureDirt);
     bgTunnel.setTexture(Resources::textureTunnel);
+
+    horOffset = (pWindow->getSize().x >> 1) - (width >> 1);
+
+    bgDirt.setPosition(sf::Vector2f(horOffset, TOP_MARGIN));
+    bgTunnel.setPosition(sf::Vector2f(horOffset, TOP_MARGIN));
 }
 
-inline sf::IntRect getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
+inline sf::IntRect Board::getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
     float playerSpriteWidth, playerSpriteHeight;
+
+    playerSpriteWidth = game->getPlayer(0)->getSize().x;
+    playerSpriteHeight = game->getPlayer(0)->getSize().y;
 
     if (current.y < prev.y) {
         return sf::IntRect(current.x, current.y, playerSpriteWidth, prev.y + playerSpriteHeight - current.x);
@@ -31,7 +41,7 @@ inline sf::IntRect getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
         return sf::IntRect(prev.x, prev.y, current.x + playerSpriteWidth - prev.x, playerSpriteHeight);
     }
     else {
-        return sf::IntRect(0,0,0,0);
+        return sf::IntRect(current.x,current.y,1,1);
     }
 }
 
@@ -47,11 +57,11 @@ void Board::update() {
     currPlayerPos[0] = game->getPlayer(0)->getPosition();
     currPlayerPos[1] = game->getPlayer(1)->getPosition();
 
-    rectPlayerMovement[0] = getProperRectangle(currPlayerPos[0], prevPlayerPos[0]);
-    rectPlayerMovement[1] = getProperRectangle(currPlayerPos[1], prevPlayerPos[1]);
+    //rectPlayerMovement[0] = getProperRectangle(currPlayerPos[0], prevPlayerPos[0]);
+    //rectPlayerMovement[1] = getProperRectangle(currPlayerPos[1], prevPlayerPos[1]);
 
-    collisionLayer.copy(whiteImage, rectPlayerMovement[0].left, rectPlayerMovement[0].top, rectPlayerMovement[0]);
-    collisionLayer.copy(whiteImage, rectPlayerMovement[1].left, rectPlayerMovement[1].top, rectPlayerMovement[1]);
+    collisionLayer.copy(whiteImage, currPlayerPos[0].x, currPlayerPos[0].y, sf::IntRect(0,0,15,15));
+    collisionLayer.copy(whiteImage, currPlayerPos[1].x, currPlayerPos[1].y, sf::IntRect(0,0,15,15));
 
     prevPlayerPos[0] = currPlayerPos[0];
     prevPlayerPos[1] = currPlayerPos[1];
@@ -60,13 +70,16 @@ void Board::update() {
 void Board::draw() {
     sf::Image tunnelTextImage;
 
-    tunnelTextImage = bgTunnel.getTexture()->copyToImage();
-    collisionLayer.createMaskFromColor(sf::Color::White);
-    tunnelTextImage.copy(collisionLayer,0,0,sf::IntRect(0, 0, collisionLayer.getSize().x, collisionLayer.getSize().y));
-    tunnelTextImage.createMaskFromColor(sf::Color::Black);
-    Resources::textureTunnel.loadFromImage(tunnelTextImage, sf::IntRect(0, 0, tunnelTextImage.getSize().x, tunnelTextImage.getSize().y));
+    tunnelTextImage = Resources::textureTunnel.copyToImage();
 
-    bgTunnel.setTexture(Resources::textureTunnel);
+    collisionLayer.createMaskFromColor(sf::Color::White);
+
+    tunnelTextImage.copy(collisionLayer, 0, 0, sf::IntRect(0, 0, 0, 0), true);
+    tunnelTextImage.createMaskFromColor(sf::Color::Black);
+
+    TunnelMask.loadFromImage(tunnelTextImage);
+
+    bgTunnel.setTexture(TunnelMask);
 
     pWindow->draw(bgDirt);
     pWindow->draw(bgTunnel);

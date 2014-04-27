@@ -14,11 +14,11 @@ void LD48::init() {
     nPlayers = 2;
     players = std::vector<Player>(nPlayers);
     for (unsigned i = 0; i < players.size(); ++i) {
-        sf::Vector2f pos(2*i,2);
+        sf::Vector2f pos(800,2);
         players[i] = Player(i,pos,this);
     }
     isKeyPressed = std::vector<dir>(nPlayers);
-    float boardWidth = 1000;
+    float boardWidth = 800;
     board = Board(this, boardWidth);
 }
 
