@@ -5,6 +5,7 @@ LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     , gameState(menu)
     , ui(this){
     ui.init();
+    srand (time(NULL));
 }
 
 LD48::~LD48() {}
@@ -15,7 +16,7 @@ void LD48::init(int nPlayer) {
     nPlayers = nPlayer;
     players = std::vector<Player>(nPlayers);
     for (unsigned i = 0; i < players.size(); ++i) {
-        sf::Vector2f pos(800,100*(i+1));
+        sf::Vector2f pos(800,230*(i+1));
         players[i] = Player(i,pos,this);
     }
     isKeyPressed = std::vector<dir>(nPlayers);
@@ -27,6 +28,11 @@ void LD48::update(float deltaTime){
     if (gameState == playing) {
         for (unsigned i = 0; i < players.size(); ++i) players[i].update(deltaTime);
         board.update();
+
+        int randSpawns = rand()%20;
+        if(randSpawns < 1) board.SpawnDebuff();
+        //else if(randSpawns < 2) board.SpawnPowerUp();
+        //else if(randSpawns < 5) board.SpawnPointObject(randSpawns - 1);
     }
 }
 

@@ -5,7 +5,7 @@ Board::Board(){
 }
 
 Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
-    height = pWindow->getSize().y - TOP_MARGIN;
+    height = pWindow->getSize().y;
     width = w;
 
     collisionLayer.create(width, height, sf::Color::Black);
@@ -18,8 +18,28 @@ Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
 
     horOffset = (pWindow->getSize().x >> 1) - (width >> 1);
 
-    bgDirt.setPosition(sf::Vector2f(horOffset, TOP_MARGIN));
+    bgDirt.setPosition(sf::Vector2f(horOffset - 590, 0));
     bgTunnel.setPosition(sf::Vector2f(horOffset, TOP_MARGIN));
+
+    int rodonesX = Resources::rodones.getSize().x >> 2;
+    int rodonesY = Resources::rodones.getSize().y >> 1;
+
+    spDBSpeed.setTexture(Resources::rodones);
+    spDBSpeed.setTextureRect(sf::IntRect(rodonesX, rodonesY, rodonesX, rodonesY));
+    spDBStrength.setTexture(Resources::rodones);
+    spDBStrength.setTextureRect(sf::IntRect(0, rodonesY, rodonesX, rodonesY));
+
+    spPUSpeed.setTexture(Resources::rodones);
+    spPUSpeed.setTextureRect(sf::IntRect(rodonesX, 0, rodonesX, rodonesY));
+    spDBStrength.setTexture(Resources::rodones);
+    spDBStrength.setTextureRect(sf::IntRect(0, 0, rodonesX, rodonesY));
+
+    spPOOne.setTexture(Resources::rodones);
+    spPOOne.setTextureRect(sf::IntRect(rodonesX << 1, 0, rodonesX, rodonesY));
+    spPOTwo.setTexture(Resources::rodones);
+    spPOTwo.setTextureRect(sf::IntRect(rodonesX << 1 + rodonesX, 0, rodonesX, rodonesY));
+    spPOThree.setTexture(Resources::rodones);
+    spPOThree.setTextureRect(sf::IntRect(rodonesX << 1, rodonesY, rodonesX, rodonesY));
 }
 
 inline sf::IntRect Board::getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
@@ -83,6 +103,8 @@ void Board::draw() {
 
     pWindow->draw(bgDirt);
     pWindow->draw(bgTunnel);
+
+
 }
 
 boardType Board::getBoardType(sf::Vector2f pos) {
@@ -103,4 +125,13 @@ boardType Board::getBoardType(sf::Vector2f pos) {
 
     if(sumColorType >= 4) return full;
     else return digged;
+}
+
+void Board::SpawnDebuff() {
+    int x, y;
+
+    x = rand()%800;
+    y = rand()%800;
+
+    listDebuff.push_back((deBuff)(rand()%2));
 }

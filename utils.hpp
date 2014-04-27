@@ -19,6 +19,9 @@
 #include <stack>
 #include <queue>
 #include <map>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 
 typedef std::vector<bool> VBool;
 typedef std::vector<float> VFloat;
