@@ -28,3 +28,6 @@ HEADERS += \
     Object.hpp \
     Collectible.hpp
 
+OTHER_FILES += \
+    shaders/tunnel.frag
+

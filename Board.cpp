@@ -12,8 +12,7 @@ Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
     height = pWindow->getSize().y;
     width = w;
 
-	collisionLayer.create(width, height, sf::Color::Black);
-	collisionLayer2.create(width, height, sf::Color::Transparent);
+    collisionLayer.create(width, height, sf::Color::Black);
 	whiteImage.create(width, height, sf::Color::White);
 
 	bgDirt.setTexture(Resources::textureDirt);
@@ -34,7 +33,7 @@ void Board::init () {
 
 
 void Board::updateCollisionLayer2(int xx, int yy, int tx, int ty)
-{
+{/*
     int itx = (int)collisionLayer.getSize().x;
 	int ity = (int)collisionLayer.getSize().y;
 	tx = min(itx, xx+tx);
@@ -57,7 +56,7 @@ void Board::updateCollisionLayer2(int xx, int yy, int tx, int ty)
 			if(ct > 65) c = Resources::textureTunnel.getPixel(x, y);
 			collisionLayer2.setPixel(x, y, c);
 
-        }
+        }*/
 }
 
 void Board::update() {
@@ -70,9 +69,10 @@ void Board::update() {
     //rectPlayerMovement[1] = getProperRectangle(currPlayerPos[1], prevPlayerPos[1]);
 
     collisionLayer.copy(whiteImage, currPlayerPos[0].x - horOffset, currPlayerPos[0].y - TOP_MARGIN, sf::IntRect(0,0,15,15));
-	updateCollisionLayer2(currPlayerPos[0].x - horOffset-10, currPlayerPos[0].y - TOP_MARGIN-10, 35, 35);
+   // updateCollisionLayer2(currPlayerPos[0].x - horOffset-10, currPlayerPos[0].y - TOP_MARGIN-10, 35, 35);
     collisionLayer.copy(whiteImage, currPlayerPos[1].x - horOffset, currPlayerPos[1].y - TOP_MARGIN, sf::IntRect(0,0,15,15));
-	updateCollisionLayer2(currPlayerPos[1].x - horOffset-10, currPlayerPos[1].y - TOP_MARGIN-10, 35, 35);
+    //updateCollisionLayer2(currPlayerPos[1].x - horOffset-10, currPlayerPos[1].y - TOP_MARGIN-10, 35, 35);
+//    updateCollisionLayer2(0, 0, 800, 800);
 
     prevPlayerPos[0] = currPlayerPos[0];
     prevPlayerPos[1] = currPlayerPos[1];
@@ -80,11 +80,12 @@ void Board::update() {
 }
 
 void Board::draw() {
-	TunnelMask.loadFromImage(collisionLayer2);
-	bgTunnel.setTexture(TunnelMask);
+    collisionLayerTexture.loadFromImage(collisionLayer);
+    bgTunnel.setTexture(collisionLayerTexture);
 
     pWindow->draw(bgDirt);
-    pWindow->draw(bgTunnel);
+    Resources::tunnelShader.setParameter("tex2", Resources::textureTunnel);
+    pWindow->draw(bgTunnel, &Resources::tunnelShader);
 }
 
 boardType Board::getBoardType(sf::Vector2f pos) {

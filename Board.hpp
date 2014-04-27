@@ -29,10 +29,9 @@ private:
 public:
     int horOffset;
 	sf::Image collisionLayer;
-	sf::Image collisionLayer2;
 	sf::Image whiteImage;
 
-    sf::Texture TunnelMask;
+    sf::Texture collisionLayerTexture;
 
     // Board sprites
     sf::Sprite bgDirt;
