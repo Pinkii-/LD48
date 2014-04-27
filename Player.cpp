@@ -12,14 +12,14 @@ Player::Player(int identifier, sf::Vector2f pos, LD48* p) {
 	position = pos;
 	id = identifier;
 	deBuff qttdB = qtt_deBuff;
-	powerUp qttpU = qtt_powerUp;
+    powerUp qttpU = qtt_powerUp;
 	deBuffs = VFloat(qttdB, false);
 	powerUps = VFloat(qttpU, false);
 	spriteSource.x = spriteSource.y = 0.0;
     /***SPEED VALUE***/	speed = 180;
 	time_between_sprites = 0.09;
 	spriteTimeCounter = 0.0;
-	digSpeed = speed*0.8;
+    digSpeed = speed*0.4;
 	walkSpeed = speed;
 	
     spriteSize.x =  Resources::player.getSize().x/4;
@@ -67,7 +67,7 @@ void Player::update(float deltaTime){
         boardType bT = pare->getBoard()->getBoardType(desti);
 
 		if(bT == digged) {
-			actSpeed = digSpeed;
+            actSpeed = walkSpeed;
 			for(int i = 0; i < powerUps.size(); ++i){
                 if(powerUps[i] > 0) actSpeed *= pUdigged[(int)powerUps[i]];
 			}
@@ -76,7 +76,7 @@ void Player::update(float deltaTime){
 			}
 		}
 		else if(bT == full) {
-			actSpeed = walkSpeed;
+            actSpeed = digSpeed;
 			for(int i = 0; i < powerUps.size(); ++i){
                 if(powerUps[i] > 0) actSpeed *= pUfull[(int)powerUps[i]];
 			}

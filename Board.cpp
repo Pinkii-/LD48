@@ -60,8 +60,8 @@ void Board::update() {
     //rectPlayerMovement[0] = getProperRectangle(currPlayerPos[0], prevPlayerPos[0]);
     //rectPlayerMovement[1] = getProperRectangle(currPlayerPos[1], prevPlayerPos[1]);
 
-    collisionLayer.copy(whiteImage, currPlayerPos[0].x, currPlayerPos[0].y, sf::IntRect(0,0,15,15));
-    collisionLayer.copy(whiteImage, currPlayerPos[1].x, currPlayerPos[1].y, sf::IntRect(0,0,15,15));
+    collisionLayer.copy(whiteImage, currPlayerPos[0].x - horOffset, currPlayerPos[0].y - TOP_MARGIN, sf::IntRect(0,0,15,15));
+    collisionLayer.copy(whiteImage, currPlayerPos[1].x - horOffset, currPlayerPos[1].y - TOP_MARGIN, sf::IntRect(0,0,15,15));
 
     prevPlayerPos[0] = currPlayerPos[0];
     prevPlayerPos[1] = currPlayerPos[1];
@@ -88,16 +88,19 @@ void Board::draw() {
 boardType Board::getBoardType(sf::Vector2f pos) {
     //full digged blocked qtt_boardType
 
-    if(pos.x > width || pos.x < 0 || pos.y < 0 || pos.y > height) {
+    if(pos.x + 15 > width + horOffset || pos.x < 0 + horOffset || pos.y < TOP_MARGIN || pos.y > height) {
         return blocked;
     }
+    int sumColorType = 0;
+    if(collisionLayer.getPixel(pos.x - horOffset, pos.y - TOP_MARGIN) == sf::Color::Black) sumColorType++;
+    if(collisionLayer.getPixel(pos.x - horOffset, pos.y + 15 - TOP_MARGIN) == sf::Color::Black) sumColorType++;
+    if(collisionLayer.getPixel(pos.x + 15 - horOffset, pos.y + 15 - TOP_MARGIN) == sf::Color::Black) sumColorType++;
+    if(collisionLayer.getPixel(pos.x + 15 - horOffset, pos.y - TOP_MARGIN) == sf::Color::Black) sumColorType++;
+    if(collisionLayer.getPixel(pos.x + 7 - horOffset, pos.y - TOP_MARGIN) == sf::Color::Black) sumColorType++;
+    if(collisionLayer.getPixel(pos.x + 7 - horOffset, pos.y + 15 - TOP_MARGIN) == sf::Color::Black) sumColorType++;
+    if(collisionLayer.getPixel(pos.x - horOffset, pos.y + 7 - TOP_MARGIN) == sf::Color::Black) sumColorType++;
+    if(collisionLayer.getPixel(pos.x + 15 - horOffset, pos.y + 7 - TOP_MARGIN) == sf::Color::Black) sumColorType++;
 
-    sf::Color pixelColor = collisionLayer.getPixel(pos.x, pos.y);
-
-    if(pixelColor == sf::Color::Black){
-        return full;
-    }
-    else if(pixelColor == sf::Color::White){
-        return digged;
-    }
+    if(sumColorType >= 4) return full;
+    else return digged;
 }

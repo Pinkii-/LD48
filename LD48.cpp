@@ -15,7 +15,7 @@ void LD48::init() {
     nPlayers = ui.getNPlayers();
     players = std::vector<Player>(nPlayers);
     for (unsigned i = 0; i < players.size(); ++i) {
-        sf::Vector2f pos(800,2);
+        sf::Vector2f pos(800,100*(i+1));
         players[i] = Player(i,pos,this);
     }
     isKeyPressed = std::vector<dir>(nPlayers);
