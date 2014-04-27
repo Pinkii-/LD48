@@ -3,82 +3,93 @@
 
 Ui::Ui(LD48* g) : game(g){
     select = 0;
-    currentState = menu;
 }
 
 void Ui::draw() {
     game->getWindow()->draw(fondo);
     if (currentState != playing) {
+        game->getWindow()->draw(title);
         for(unsigned i = 0; i < texts.size(); ++i) {
-            game->getWindow()->draw(title);
             game->getWindow()->draw(texts[i].second);
             game->getWindow()->draw(texts[i].first);
         }
     }
 }
 
+void Ui::init() {
+    font = Resources::menuFont;
+    fondo.setTexture(Resources::menuTexture);
+    fondo.setPosition(sf::Vector2f(0,0));
+    float scalex, scaley;
+    scalex =  game->getWindow()->getSize().x/float(fondo.getTexture()->getSize().x);
+    scaley =  game->getWindow()->getSize().y/float(fondo.getTexture()->getSize().y);
+    fondo.setScale(scalex,scaley);
+    changeState(menu);
+}
+
 void Ui::changeState(state s) {
     currentState = s;
-    if (currentState == menu or currentState == help or currentState == options) {
-        font = Resources::menuFont;
-        fondo.setTexture(Resources::menuTexture);
-        fondo.setPosition(sf::Vector2f(0,0));
-        float scalex, scaley;
-        scalex =  game->getWindow()->getSize().x/float(fondo.getTexture()->getSize().x);
-        scaley =  game->getWindow()->getSize().y/float(fondo.getTexture()->getSize().y);
-        fondo.setScale(scalex,scaley);
-    }
     if (currentState == menu) {
         texts = std::vector<std::pair<sf::Text,sf::Text> >(6);
         setText();
         setPositions();
         changeSelected(0);
-    }
-    else if (currentState == help) {
+    } else if (currentState == help) {
         texts = std::vector<std::pair<sf::Text,sf::Text> >(1);
         setText();
         setPositions();
         changeSelected(0);
+    } else if (currentState == options) {
+        texts = std::vector<std::pair<sf::Text,sf::Text> >();
     }
     else {
-        //        fondo.setTexture(Resources::playingTexture);
-        fondo = sf::Sprite();
+        //fondo.setTexture(Resources::playingTexture);
     }
 }
 
 void Ui::setKeyPressed(sf::Keyboard::Key k) {
     if (k == sf::Keyboard::Up or k == sf::Keyboard::W) {
         int aux = select;
-        if (select-1<0) aux = 6;
-        changeSelected((aux-1)%6);
+        if (aux-1<0) aux = texts.size();
+        changeSelected((aux-1)%texts.size());
     }
-    else if (k == sf::Keyboard::Down or k == sf::Keyboard::S) changeSelected((select+1)%6);
+    else if (k == sf::Keyboard::Down or k == sf::Keyboard::S) changeSelected((select+1)%texts.size());
     else if (k == sf::Keyboard::Return) {
-        switch (select) {
-        case 0:
-            nPlayers = 2;
-            game->init();
-            break;
-        case 1:
-            nPlayers = 3;
-            game->init();
-            break;
-        case 2:
-            nPlayers = 4;
-            game->init();
-            break;
-        case 3:
-            changeState(help);
-            break;
-        case 4:
-            changeState(options);
-            break;
-        case 5:
-            game->getWindow()->close();
-            break;
-        default:
-            break;
-        }
+        if (currentState == menu) {
+            switch (select) {
+            case 0:
+                nPlayers = 2;
+                game->init(2);
+                break;
+            case 1:
+                nPlayers = 3;
+                game->init(3);
+                break;
+            case 2:
+                nPlayers = 4;
+                game->init(4);
+                break;
+            case 3:
+                changeState(help);
+                break;
+            case 4:
+                changeState(options);
+                break;
+            case 5:
+                game->getWindow()->close();
+                break;
+            default:
+                break;
+            }
+        } else if (currentState == help) changeState(menu);
+//        else if (currentState == options) {
+            //            switch (select) {
+            //            case 0:
+            //                break;
+            //            default:
+            //                break;
+            //            }
+//        }
     }
 }
 
@@ -102,6 +113,11 @@ void Ui::setText() {
         texts[3].second.setString("Help"     );
         texts[4].second.setString("Options"  );
         texts[5].second.setString("Exit"     );
+    }
+    else if (currentState == help) {
+        title.setString("Help");
+        texts[0].first.setString("Menu");
+        texts[0].second.setString("Menu");
     }
 }
 
@@ -137,6 +153,11 @@ void Ui::setPositions() {
             texts[i].second.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(texts.size()+2)*(i+2)));
             texts[i].second.setScale(1,1.15);
         }
+    }
+    else if (currentState == help) {
+        title.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/((6*1.5))));
+        texts[0].first.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
+        texts[0].second.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
     }
 }
 

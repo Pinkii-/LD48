@@ -7,6 +7,7 @@ class Ui {
 public:
     Ui(LD48* game);
     void draw();
+    void init();
     void changeState(state s);
     void setKeyPressed(sf::Keyboard::Key k);
     int getNPlayers();
