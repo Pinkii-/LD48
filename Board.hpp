@@ -19,6 +19,11 @@ public:
     void SpawnPowerUp();
     void SpawnPointObject(int points);
 private:
+    struct Object {
+        int typeObject;
+        sf::Vector2f pos;
+    };
+
     LD48* game;
 
     sf::Vector2f BoardPosition;
@@ -51,9 +56,9 @@ private:
     sf::Vector2f currPlayerPos[2];
     sf::Vector2f prevPlayerPos[2];
 
-    std::list<deBuff> listDebuff;
-    std::list<powerUp> listPowerUp;
-    std::list<pointObject> listPointObject;
+    std::list<Object> listDebuff;
+    std::list<Object> listPowerUp;
+    std::list<Object> listPointObject;
 
     sf::RenderWindow* pWindow;
 

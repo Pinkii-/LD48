@@ -26,20 +26,27 @@ Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
 
     spDBSpeed.setTexture(Resources::rodones);
     spDBSpeed.setTextureRect(sf::IntRect(rodonesX, rodonesY, rodonesX, rodonesY));
+    spDBSpeed.setScale((float)rodonesX/pWindow->getSize().x * 3, (float)rodonesX/pWindow->getSize().x * 3);
     spDBStrength.setTexture(Resources::rodones);
     spDBStrength.setTextureRect(sf::IntRect(0, rodonesY, rodonesX, rodonesY));
+    spDBStrength.setScale((float)rodonesX/pWindow->getSize().x * 3, (float)rodonesX/pWindow->getSize().x  * 3);
 
     spPUSpeed.setTexture(Resources::rodones);
     spPUSpeed.setTextureRect(sf::IntRect(rodonesX, 0, rodonesX, rodonesY));
-    spDBStrength.setTexture(Resources::rodones);
-    spDBStrength.setTextureRect(sf::IntRect(0, 0, rodonesX, rodonesY));
+    spPUSpeed.setScale((float)rodonesX/pWindow->getSize().x * 3, (float)rodonesX/pWindow->getSize().x * 3);
+    spPUStrength.setTexture(Resources::rodones);
+    spPUStrength.setTextureRect(sf::IntRect(0, 0, rodonesX, rodonesY));
+    spPUStrength.setScale((float)rodonesX/pWindow->getSize().x * 3, (float)rodonesX/pWindow->getSize().x * 3);
 
     spPOOne.setTexture(Resources::rodones);
     spPOOne.setTextureRect(sf::IntRect(rodonesX << 1, 0, rodonesX, rodonesY));
+    spPOOne.setScale((float)rodonesX/pWindow->getSize().x * 3, (float)rodonesX/pWindow->getSize().x * 3);
     spPOTwo.setTexture(Resources::rodones);
-    spPOTwo.setTextureRect(sf::IntRect(rodonesX << 1 + rodonesX, 0, rodonesX, rodonesY));
+    spPOTwo.setTextureRect(sf::IntRect(rodonesX * 3, 0, rodonesX, rodonesY));
+    spPOTwo.setScale((float)rodonesX/pWindow->getSize().x * 3, (float)rodonesX/pWindow->getSize().x * 3);
     spPOThree.setTexture(Resources::rodones);
     spPOThree.setTextureRect(sf::IntRect(rodonesX << 1, rodonesY, rodonesX, rodonesY));
+    spPOThree.setScale((float)rodonesX/pWindow->getSize().x * 3, (float)rodonesX/pWindow->getSize().x * 3);
 }
 
 inline sf::IntRect Board::getProperRectangle(sf::Vector2f current, sf::Vector2f prev) {
@@ -85,6 +92,43 @@ void Board::update() {
 
     prevPlayerPos[0] = currPlayerPos[0];
     prevPlayerPos[1] = currPlayerPos[1];
+
+    for(std::list<Object>::iterator it = listDebuff.begin(); it != listDebuff.end(); it++) {
+        if(it->typeObject == (int)dB_Speed) {
+            spDBSpeed.setPosition(it->pos);
+            pWindow->draw(spDBSpeed);
+        }
+        else {
+            spDBStrength.setPosition(it->pos);
+            pWindow->draw(spDBStrength);
+        }
+    }
+
+    for(std::list<Object>::iterator it = listPowerUp.begin(); it != listPowerUp.end(); it++) {
+        if(it->typeObject == (int)pU_Speed) {
+            spPUSpeed.setPosition(it->pos);
+            pWindow->draw(spPUSpeed);
+        }
+        else {
+            spPUStrength.setPosition(it->pos);
+            pWindow->draw(spPUStrength);
+        }
+    }
+
+    for(std::list<Object>::iterator it = listPointObject.begin(); it != listPointObject.end(); it++) {
+        if(it->typeObject == (int)pO_one) {
+            spPOOne.setPosition(it->pos);
+            pWindow->draw(spPOOne);
+        }
+        else if(it->typeObject == (int)pO_two) {
+            spPOTwo.setPosition(it->pos);
+            pWindow->draw(spPOTwo);
+        }
+        else {
+            spPOThree.setPosition(it->pos);
+            pWindow->draw(spPOThree);
+        }
+    }
 }
 
 void Board::draw() {
@@ -104,7 +148,42 @@ void Board::draw() {
     pWindow->draw(bgDirt);
     pWindow->draw(bgTunnel);
 
+    for(std::list<Object>::iterator it = listDebuff.begin(); it != listDebuff.end(); it++) {
+        if(it->typeObject == (int)dB_Speed) {
+            spDBSpeed.setPosition(it->pos);
+            pWindow->draw(spDBSpeed);
+        }
+        else {
+            spDBStrength.setPosition(it->pos);
+            pWindow->draw(spDBStrength);
+        }
+    }
 
+    for(std::list<Object>::iterator it = listPowerUp.begin(); it != listPowerUp.end(); it++) {
+        if(it->typeObject == (int)pU_Speed) {
+            spPUSpeed.setPosition(it->pos);
+            pWindow->draw(spPUSpeed);
+        }
+        else {
+            spPUStrength.setPosition(it->pos);
+            pWindow->draw(spPUStrength);
+        }
+    }
+
+    for(std::list<Object>::iterator it = listPointObject.begin(); it != listPointObject.end(); it++) {
+        if(it->typeObject == (int)pO_one) {
+            spPOOne.setPosition(it->pos);
+            pWindow->draw(spPOOne);
+        }
+        else if(it->typeObject == (int)pO_two) {
+            spPOTwo.setPosition(it->pos);
+            pWindow->draw(spPOTwo);
+        }
+        else {
+            spPOThree.setPosition(it->pos);
+            pWindow->draw(spPOThree);
+        }
+    }
 }
 
 boardType Board::getBoardType(sf::Vector2f pos) {
@@ -130,8 +209,37 @@ boardType Board::getBoardType(sf::Vector2f pos) {
 void Board::SpawnDebuff() {
     int x, y;
 
-    x = rand()%800;
-    y = rand()%800;
+    x = rand()%800 + horOffset;
+    y = rand()%800 + TOP_MARGIN;
 
-    listDebuff.push_back((deBuff)(rand()%2));
+    Object tmp;
+    tmp.typeObject = rand()%2;
+    tmp.pos = sf::Vector2f(x, y);
+
+    listDebuff.push_back(tmp);
+}
+
+void Board::SpawnPowerUp() {
+    int x, y;
+
+    x = rand()%800 + horOffset;
+    y = rand()%800 + TOP_MARGIN;
+
+    Object tmp;
+    tmp.typeObject = rand()%2;
+    tmp.pos = sf::Vector2f(x, y);
+
+    listPowerUp.push_back(tmp);
+}
+
+void Board::SpawnPointObject(int points) {
+    int x, y;
+
+    x = rand()%800 + horOffset;
+    y = rand()%800 + TOP_MARGIN;
+
+    Object tmp;
+    tmp.typeObject = points - 1;
+    tmp.pos = sf::Vector2f(x, y);
+    listPointObject.push_back(tmp);
 }

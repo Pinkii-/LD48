@@ -31,8 +31,8 @@ void LD48::update(float deltaTime){
 
         int randSpawns = rand()%20;
         if(randSpawns < 1) board.SpawnDebuff();
-        //else if(randSpawns < 2) board.SpawnPowerUp();
-        //else if(randSpawns < 5) board.SpawnPointObject(randSpawns - 1);
+        else if(randSpawns < 2) board.SpawnPowerUp();
+        else if(randSpawns < 5) board.SpawnPointObject(randSpawns - 1);
     }
 }
 
