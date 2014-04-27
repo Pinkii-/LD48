@@ -24,7 +24,7 @@ typedef std::vector<bool> VBool;
 typedef std::vector<float> VFloat;
 
 enum state {
-    menu, playing
+    menu, help, options, playing
 };
 
 enum powerUp {

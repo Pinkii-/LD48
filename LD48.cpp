@@ -2,16 +2,17 @@
 
 LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     : Game(scrwidth,scrheight,title,style)
-    , gameState(playing)
+    , gameState(menu)
     , ui(this){
     ui.changeState(gameState);
-    init();
 }
 
 LD48::~LD48() {}
 
 void LD48::init() {
-    nPlayers = 2;
+    ui.changeState(playing);
+    gameState = playing;
+    nPlayers = ui.getNPlayers();
     players = std::vector<Player>(nPlayers);
     for (unsigned i = 0; i < players.size(); ++i) {
         sf::Vector2f pos(2*i,2);
@@ -30,8 +31,8 @@ void LD48::update(float deltaTime){
 }
 
 void LD48::draw(){
-    board.draw();
     if (gameState == playing) {
+        board.draw();
         for (unsigned i = 0; i < players.size(); ++i) players[i].draw(window);
     }
     ui.draw();
@@ -45,10 +46,12 @@ void LD48::processEvents(){
             window.close();
             break;
         case sf::Event::KeyPressed:
-            keyPressed(event);
+            if (gameState == playing) keyPressed(event);
+            else ui.setKeyPressed(event.key.code);
             break;
         case sf::Event::KeyReleased:
-            keyReleased(event);
+            if (gameState == playing) keyReleased(event);
+            break;
         default:
             break;
         }
@@ -84,9 +87,25 @@ void LD48::keyPressed(sf::Event event) {
     case sf::Keyboard::Right:
         isKeyPressed[1] = right;
         break;
-    case sf::Keyboard::P:
-        gameState = playing;
     default:
+        if (nPlayers > 2) {
+            switch (event.key.code) {
+            case sf::Keyboard::J:
+                isKeyPressed[2] = left;
+                break;
+            case sf::Keyboard::I:
+                isKeyPressed[2] = up;
+                break;
+            case sf::Keyboard::K:
+                isKeyPressed[2] = down;
+                break;
+            case sf::Keyboard::L:
+                isKeyPressed[2] = right;
+                break;
+            default:
+                break;
+            }
+        }
         break;
     }
 }
@@ -118,8 +137,30 @@ void LD48::keyReleased(sf::Event event) {
         if(isKeyPressed[1] == right) isKeyPressed[1] = none;
         break;
     default:
+        if (nPlayers > 2) {
+            switch (event.key.code) {
+            case sf::Keyboard::J:
+                if(isKeyPressed[2] == left) isKeyPressed[2] = none;
+                break;
+            case sf::Keyboard::I:
+                if(isKeyPressed[2] == up) isKeyPressed[2] = none;
+                break;
+            case sf::Keyboard::K:
+                if(isKeyPressed[2] == down) isKeyPressed[2] = none;
+                break;
+            case sf::Keyboard::L:
+                if(isKeyPressed[2] == right) isKeyPressed[2] = none;
+                break;
+            default:
+                break;
+            }
+        }
         break;
     }
+}
+
+void LD48::setState(state s) {
+    init();
 }
 
 dir LD48::getDirection(int i) {

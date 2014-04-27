@@ -8,6 +8,7 @@ public:
     static sf::Texture textureTunnel;
     static sf::Texture textureDirt;
     static sf::Texture menuTexture;
+    static sf::Texture playingTexture;
     static sf::Texture player;
     static sf::Font menuFont;
 };

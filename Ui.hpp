@@ -8,12 +8,20 @@ public:
     Ui(LD48* game);
     void draw();
     void changeState(state s);
-    void setText(state s);
+    void setKeyPressed(sf::Keyboard::Key k);
+    int getNPlayers();
 private:
     LD48* game;
     sf::Sprite fondo;
     sf::Font font;
-    std::vector<sf::Text> texts;
+    sf::Text title;
+    std::vector<std::pair<sf::Text,sf::Text> > texts;
+    state currentState;
+    int nPlayers;
+    int select;
+    void setText();
+    void setPositions();
+    void changeSelected(int newSelected);
 };
 
 #endif // UI_HPP

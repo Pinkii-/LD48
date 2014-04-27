@@ -15,6 +15,7 @@ public:
     void processEvents();
     void keyPressed(sf::Event event);
     void keyReleased(sf::Event event);
+    void setState(state s);
     dir getDirection(int id);
     Board* getBoard();
     Player* getPlayer(int id);
