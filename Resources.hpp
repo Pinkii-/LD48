@@ -5,7 +5,7 @@
 class Resources {
 public:
     static void load();
-    static sf::Texture textureTunnel;
+	static sf::Image textureTunnel;
     static sf::Texture textureDirt;
     static sf::Texture menuTexture;
     static sf::Texture playingTexture;
