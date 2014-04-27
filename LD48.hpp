@@ -9,7 +9,7 @@ class LD48 : public Game {
 public:
     LD48(int scrwidth, int scrheight, std::string title, int style);
     ~LD48();
-    void init();
+    void init(int nPlayer);
     void update(float deltaTime);
     void draw();
     void processEvents();

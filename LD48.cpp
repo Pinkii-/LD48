@@ -4,15 +4,15 @@ LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     : Game(scrwidth,scrheight,title,style)
     , gameState(menu)
     , ui(this){
-    ui.changeState(gameState);
+    ui.init();
 }
 
 LD48::~LD48() {}
 
-void LD48::init() {
+void LD48::init(int nPlayer) {
     ui.changeState(playing);
     gameState = playing;
-    nPlayers = ui.getNPlayers();
+    nPlayers = nPlayer;
     players = std::vector<Player>(nPlayers);
     for (unsigned i = 0; i < players.size(); ++i) {
         sf::Vector2f pos(800,100*(i+1));
@@ -31,11 +31,11 @@ void LD48::update(float deltaTime){
 }
 
 void LD48::draw(){
+    ui.draw();
     if (gameState == playing) {
         board.draw();
         for (unsigned i = 0; i < players.size(); ++i) players[i].draw(window);
     }
-    ui.draw();
 }
 
 void LD48::processEvents(){
@@ -46,6 +46,7 @@ void LD48::processEvents(){
             window.close();
             break;
         case sf::Event::KeyPressed:
+            if (event.key.code == sf::Keyboard::Escape) window.close();
             if (gameState == playing) keyPressed(event);
             else ui.setKeyPressed(event.key.code);
             break;
@@ -60,9 +61,6 @@ void LD48::processEvents(){
 
 void LD48::keyPressed(sf::Event event) {
     switch (event.key.code) {
-    case sf::Keyboard::Escape:
-        window.close();
-        break;
     case sf::Keyboard::A:
         isKeyPressed[0] = left;
         break;
@@ -157,10 +155,6 @@ void LD48::keyReleased(sf::Event event) {
         }
         break;
     }
-}
-
-void LD48::setState(state s) {
-    init();
 }
 
 dir LD48::getDirection(int i) {
