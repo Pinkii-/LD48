@@ -81,9 +81,10 @@ void Board::init () {
 }
 
 bool Board::colisionRectangle(sf::Vector2f p, sf::Vector2f q){
-    sf::Vector2f sizep = game->getPlayer(0)->getSize();
-    sf::Vector2f sizeq (Resources::rodones.getSize().x/4 * Resources::rodones.getSize().x/4 /pWindow->getSize().x * 3
-                        , Resources::rodones.getSize().x/2 * Resources::rodones.getSize().x/4 /pWindow->getSize().x * 3);
+    sf::Vector2f sizep (game->getPlayer(0)->getSize().x*game->getPlayer(0)->getSize().x/pWindow->getSize().x*2,
+                        game->getPlayer(0)->getSize().x*game->getPlayer(0)->getSize().x/pWindow->getSize().x*2);
+    sf::Vector2f sizeq ((Resources::rodones.getSize().x/4 * Resources::rodones.getSize().x/4) /pWindow->getSize().x * 3
+                        , (Resources::rodones.getSize().x/2 * Resources::rodones.getSize().x/2) /pWindow->getSize().x * 3);
 
     if (p.x >= q.x+sizeq.x || p.x+sizep.x <= q.x ||
         p.y >= q.y+sizeq.y || p.y+sizep.y <= q.y) {
