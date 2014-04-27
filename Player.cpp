@@ -56,7 +56,7 @@ void Player::updateTimes(){
 void Player::update(float deltaTime){
 	
 	dir direction = pare->getDirection(id);
-	int actSpeed = speed;
+    float actSpeed = speed;
 
 	spriteTimeCounter += deltaTime;
     if(direction != none){
@@ -73,19 +73,17 @@ void Player::update(float deltaTime){
 			}
 			for(int i = 0; i < deBuffs.size(); ++i){
                 if(powerUps[i] > 0) actSpeed *= dBdigged[(int)powerUps[i]];
-			}
+            }
 		}
 		else if(bT == full) {
             actSpeed = digSpeed;
 			for(int i = 0; i < powerUps.size(); ++i){
                 if(powerUps[i] > 0) actSpeed *= pUfull[(int)powerUps[i]];
-			}
 			for(int i = 0; i < deBuffs.size(); ++i){
                 if(powerUps[i] > 0) actSpeed *= dBfull[(int)powerUps[i]];
 			}
 		}
 		else actSpeed = 0;
-	
 		//Set value to movement variables and update spritesource
         if(spriteSource.y == direction){
             position.x += actSpeed*movx[direction]*deltaTime;
@@ -97,6 +95,7 @@ void Player::update(float deltaTime){
 			++spriteSource.x;
 		}
 	}
+    updateTimes();
 	//Checking the sprite sources to be ok
 	if(spriteSource.x >= 4) spriteSource.x = 0;
 }

@@ -35,7 +35,6 @@ private:
     sf::Image whiteImage;
 
     sf::Texture TunnelMask;
-
     // Board sprites
     sf::Sprite bgDirt;
     sf::Sprite bgTunnel;
@@ -62,6 +61,7 @@ private:
 
     sf::RenderWindow* pWindow;
 
+    bool colisionRectangle(sf::Vector2f p, sf::Vector2f q);
     sf::IntRect getProperRectangle(sf::Vector2f current, sf::Vector2f prev);
 };
 

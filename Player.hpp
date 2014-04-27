@@ -17,6 +17,7 @@ const int movy[4] = {-1,  1,  0,  0};
 const float pUdigged[3] = {  1.2,   1,  1 };
 const float pUfull[3]   = {    1, 1.2,  1 };
 
+
 class LD48;
 class Player {
 

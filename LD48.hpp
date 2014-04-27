@@ -16,6 +16,7 @@ public:
     void keyPressed(sf::Event event);
     void keyReleased(sf::Event event);
     void setState(state s);
+    int getNplayer();
     dir getDirection(int id);
     Board* getBoard();
     Player* getPlayer(int id);

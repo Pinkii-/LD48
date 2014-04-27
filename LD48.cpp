@@ -29,7 +29,7 @@ void LD48::update(float deltaTime){
         for (unsigned i = 0; i < players.size(); ++i) players[i].update(deltaTime);
         board.update();
 
-        int randSpawns = rand()%20;
+        int randSpawns = rand()%100;
         if(randSpawns < 1) board.SpawnDebuff();
         else if(randSpawns < 2) board.SpawnPowerUp();
         else if(randSpawns < 5) board.SpawnPointObject(randSpawns - 1);
@@ -177,4 +177,8 @@ Player* LD48::getPlayer(int id){
 
 sf::RenderWindow* LD48::getWindow() {
     return &window;
+}
+
+int LD48::getNplayer(){
+    return nPlayers;
 }

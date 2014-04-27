@@ -78,6 +78,19 @@ void Board::init () {
     pWindow = game->getWindow();
 }
 
+bool Board::colisionRectangle(sf::Vector2f p, sf::Vector2f q){
+    sf::Vector2f sizep = game->getPlayer(0)->getSize();
+    sf::Vector2f sizeq (Resources::rodones.getSize().x/4 * Resources::rodones.getSize().x/4 /pWindow->getSize().x * 3
+                        , Resources::rodones.getSize().x/2 * Resources::rodones.getSize().x/4 /pWindow->getSize().x * 3);
+
+    if (p.x >= q.x+sizeq.x || p.x+sizep.x <= q.x ||
+        p.y >= q.y+sizeq.y || p.y+sizep.y <= q.y) {
+       return false;
+    } else {
+      return true;
+    }
+}
+
 void Board::update() {
     //sf::IntRect rectPlayerMovement[2];
 
@@ -93,40 +106,50 @@ void Board::update() {
     prevPlayerPos[0] = currPlayerPos[0];
     prevPlayerPos[1] = currPlayerPos[1];
 
+    const float temps = 3.1;
     for(std::list<Object>::iterator it = listDebuff.begin(); it != listDebuff.end(); it++) {
-        if(it->typeObject == (int)dB_Speed) {
-            spDBSpeed.setPosition(it->pos);
-            pWindow->draw(spDBSpeed);
-        }
-        else {
-            spDBStrength.setPosition(it->pos);
-            pWindow->draw(spDBStrength);
+        //el que agafa el debuff sels emenja de moment!!!
+        for(int i= 0; i < game->getNplayer(); ++i){
+            if(colisionRectangle(currPlayerPos[i], it->pos)){
+                if(it->typeObject == (int)dB_Speed) {
+                    game->getPlayer(i)->setDeBuff(dB_Speed, temps);
+                }
+                else {
+                    game->getPlayer(i)->setDeBuff(dB_Strength, temps);
+                }
+                it = listDebuff.erase(it);
+            }
         }
     }
 
     for(std::list<Object>::iterator it = listPowerUp.begin(); it != listPowerUp.end(); it++) {
-        if(it->typeObject == (int)pU_Speed) {
-            spPUSpeed.setPosition(it->pos);
-            pWindow->draw(spPUSpeed);
-        }
-        else {
-            spPUStrength.setPosition(it->pos);
-            pWindow->draw(spPUStrength);
+        for(int i= 0; i < game->getNplayer(); ++i){
+            if(colisionRectangle(currPlayerPos[i], it->pos)){
+                if(it->typeObject == (int)pU_Speed) {
+                    game->getPlayer(i)->setPowerUp(pU_Speed, temps);
+                }
+                else {
+                    game->getPlayer(i)->setPowerUp(pU_Strength, temps);
+                }
+               it = listPowerUp.erase(it);
+            }
         }
     }
 
     for(std::list<Object>::iterator it = listPointObject.begin(); it != listPointObject.end(); it++) {
-        if(it->typeObject == (int)pO_one) {
-            spPOOne.setPosition(it->pos);
-            pWindow->draw(spPOOne);
-        }
-        else if(it->typeObject == (int)pO_two) {
-            spPOTwo.setPosition(it->pos);
-            pWindow->draw(spPOTwo);
-        }
-        else {
-            spPOThree.setPosition(it->pos);
-            pWindow->draw(spPOThree);
+        for(int i= 0; i < game->getNplayer(); ++i){
+            if(colisionRectangle(currPlayerPos[i], it->pos)){
+                if(it->typeObject == (int) pO_one ) {
+                    //passar al player els punts
+                }
+                else if(it->typeObject == (int) pO_two) {
+                    //passar al player els punts
+                }
+                else { // pO_three
+                    //passar al player els punts
+                }
+                it = listPointObject.erase(it);
+            }
         }
     }
 }
