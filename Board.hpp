@@ -19,7 +19,10 @@ public:
     void SpawnPowerUp();
     void SpawnPointObject(int points);
 private:
-    struct Object {
+
+	void updateCollisionLayer2(int x, int y, int tx, int ty);
+
+	struct Object {
         int typeObject;
         sf::Vector2f pos;
     };
@@ -31,14 +34,15 @@ private:
     int width;
 
     int horOffset;
-    sf::Image collisionLayer;
-    sf::Image whiteImage;
+	sf::Image collisionLayer;
+	sf::Image collisionLayer2;
+	sf::Image whiteImage;
 
-    sf::Texture TunnelMask;
+	sf::Texture TunnelMask;
 
     // Board sprites
     sf::Sprite bgDirt;
-    sf::Sprite bgTunnel;
+	sf::Sprite bgTunnel;
 
     // Power Up sprites
     sf::Sprite spPUSpeed;

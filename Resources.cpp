@@ -1,6 +1,6 @@
 #include "Resources.hpp"
 
-sf::Texture     Resources::textureTunnel;
+sf::Image     Resources::textureTunnel;
 sf::Texture     Resources::textureDirt;
 sf::Texture     Resources::menuTexture;
 sf::Texture     Resources::playingTexture;
