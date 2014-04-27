@@ -52,7 +52,7 @@ void Board::init () {
 }
 
 void Board::update() {
-    sf::IntRect rectPlayerMovement[2];
+    //sf::IntRect rectPlayerMovement[2];
 
     currPlayerPos[0] = game->getPlayer(0)->getPosition();
     currPlayerPos[1] = game->getPlayer(1)->getPosition();
