@@ -79,6 +79,7 @@ void Player::update(float deltaTime){
             actSpeed = digSpeed;
 			for(int i = 0; i < powerUps.size(); ++i){
                 if(powerUps[i] > 0) actSpeed *= pUfull[(int)powerUps[i]];
+            }
 			for(int i = 0; i < deBuffs.size(); ++i){
                 if(powerUps[i] > 0) actSpeed *= dBfull[(int)powerUps[i]];
 			}

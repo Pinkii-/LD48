@@ -92,6 +92,7 @@ bool Board::colisionRectangle(sf::Vector2f p, sf::Vector2f q){
       return true;
     }
 }
+
 void Board::updateCollisionLayer2(int xx, int yy, int tx, int ty)
 {
 	int itx = (int)collisionLayer.getSize().y;
@@ -116,8 +117,7 @@ void Board::updateCollisionLayer2(int xx, int yy, int tx, int ty)
 			if(ct > 65) c = Resources::textureTunnel.getPixel(x, y);
 			collisionLayer2.setPixel(x, y, c);
 
-		}
->>>>>>> fed58312abe3f8e1d74dd3404e0c19dfc01dfa6f
+        }
 }
 
 void Board::update() {
