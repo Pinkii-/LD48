@@ -70,10 +70,13 @@ void Player::update(float deltaTime){
                 if(buffs[i] > 0) actSpeed *= bFull[i];
 		}
 		else actSpeed = 0;
+        desti.x = position.x + actSpeed*movx[direction]*deltaTime;
+        desti.y = position.y + actSpeed*movy[direction]*deltaTime;
 
-        position.x += actSpeed*movx[direction]*deltaTime;
-        position.y += actSpeed*movy[direction]*deltaTime;
-
+        if(game->getBoard()->getBoardType(desti) != blocked) {
+            position.x += actSpeed*movx[direction]*deltaTime;
+            position.y += actSpeed*movy[direction]*deltaTime;
+        }
         spriteNum.y = direction;
         if (spriteTimeCounter >= time_between_sprites){
 			spriteTimeCounter = 0;

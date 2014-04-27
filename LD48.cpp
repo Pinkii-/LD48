@@ -28,7 +28,13 @@ void LD48::init(int nPlayer) {
         p->position = sf::Vector2f (800,230*(i+1));
         addObject(p);
     }
+
     isKeyPressed = std::vector<dir>(nPlayers);
+    for(int i = 0; i < nPlayers; i++)
+    {
+        isKeyPressed[i] = none;
+    }
+
     float boardWidth = 800;
     board = Board(this, boardWidth);
 }

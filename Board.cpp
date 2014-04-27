@@ -35,7 +35,7 @@ void Board::init () {
 
 void Board::updateCollisionLayer2(int xx, int yy, int tx, int ty)
 {
-	int itx = (int)collisionLayer.getSize().y;
+    int itx = (int)collisionLayer.getSize().x;
 	int ity = (int)collisionLayer.getSize().y;
 	tx = min(itx, xx+tx);
 	ty = min(ity, yy+ty);
