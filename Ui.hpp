@@ -8,6 +8,8 @@ public:
     Ui(LD48* game);
     void draw();
     void init();
+    void update();
+    void updateScore();
     void changeState(state s);
     void setKeyPressed(sf::Keyboard::Key k);
     int getNPlayers();
@@ -18,8 +20,9 @@ private:
     sf::Text title;
     std::vector<std::pair<sf::Text,sf::Text> > texts;
     state currentState;
+    state beforeState;
     int nPlayers;
-    int select;
+    unsigned select;
     void setText();
     void setPositions();
     void changeSelected(int newSelected);

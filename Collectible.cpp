@@ -17,5 +17,6 @@ Collectible::Collectible(LD48* game, collectible type, sf::Vector2f position)
     case dB_Speed:      spriteNum = sf::Vector2i(1, 1); break;
     case dB_Strength:   spriteNum = sf::Vector2i(0, 1); break;
     case pU_Strength:   spriteNum = sf::Vector2i(0, 0); break;
+    default:                                            break;
     }
 }

@@ -27,6 +27,8 @@ class Player : public Object {
 		//set powerup or debuf
         void setBuff(collectible b, float time);
 
+        int getPoints();
+
 	private:
 
 		//VARIABLES

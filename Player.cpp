@@ -55,7 +55,7 @@ void Player::collidedWith(Object *b)
 //Update function
 void Player::update(float deltaTime){
 
-    for(int i = 0; i < buffs.size(); ++i)
+    for(unsigned int i = 0; i < buffs.size(); ++i)
         buffs[i] -= deltaTime;
 
     dir direction = game->getDirection(id);
@@ -71,12 +71,12 @@ void Player::update(float deltaTime){
 
 		if(bT == digged) {
             actSpeed = walkSpeed;
-            for(int i = 0; i < buffs.size(); ++i)
+            for(unsigned int i = 0; i < buffs.size(); ++i)
                 if(buffs[i] > 0) actSpeed *= bDigged[i];
 		}
 		else if(bT == full) {
             actSpeed = digSpeed;
-            for(int i = 0; i < buffs.size(); ++i)
+            for(unsigned int i = 0; i < buffs.size(); ++i)
                 if(buffs[i] > 0) actSpeed *= bFull[i];
 		}
 		else actSpeed = 0;
@@ -99,6 +99,10 @@ void Player::update(float deltaTime){
 
 void Player::setBuff(collectible b, float time){
     buffs[b] = time;
+}
+
+int Player::getPoints() {
+    return points;
 }
 
 

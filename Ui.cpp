@@ -3,12 +3,18 @@
 
 Ui::Ui(LD48* g) : game(g){
     select = 0;
+    beforeState = unstarted;
 }
 
 void Ui::draw() {
-    game->getWindow()->draw(fondo);
     if (currentState != playing) {
+        game->getWindow()->draw(fondo);
         game->getWindow()->draw(title);
+        for(unsigned i = 0; i < texts.size(); ++i) {
+            game->getWindow()->draw(texts[i].second);
+            game->getWindow()->draw(texts[i].first);
+        }
+    } else {
         for(unsigned i = 0; i < texts.size(); ++i) {
             game->getWindow()->draw(texts[i].second);
             game->getWindow()->draw(texts[i].first);
@@ -27,24 +33,41 @@ void Ui::init() {
     changeState(menu);
 }
 
+void Ui::update() {
+    if (beforeState != currentState) {
+        if (currentState == menu) {
+            texts.resize(6);
+            setText();
+            setPositions();
+            changeSelected(0);
+        } else if (currentState == help) {
+            texts.resize(1);
+            setText();
+            setPositions();
+            changeSelected(0);
+        } else if (currentState == options) {
+            texts.resize(0);
+        } else if (currentState == playing) {
+            texts.resize(nPlayers * 3);
+            setText();
+            setPositions();
+        }
+    }
+    if (currentState == playing) {
+        updateScore();
+    }
+    beforeState = currentState;
+}
+
+void Ui::updateScore() {
+    for (unsigned i = 0; i < nPlayers; ++i) {
+        texts[i*3+2].first.setString(std::to_string(game->getPlayer(i)->getPoints()));
+        texts[i*3+2].second.setString(std::to_string(game->getPlayer(i)->getPoints()));
+    }
+}
+
 void Ui::changeState(state s) {
     currentState = s;
-    if (currentState == menu) {
-        texts = std::vector<std::pair<sf::Text,sf::Text> >(6);
-        setText();
-        setPositions();
-        changeSelected(0);
-    } else if (currentState == help) {
-        texts = std::vector<std::pair<sf::Text,sf::Text> >(1);
-        setText();
-        setPositions();
-        changeSelected(0);
-    } else if (currentState == options) {
-        texts = std::vector<std::pair<sf::Text,sf::Text> >();
-    }
-    else {
-        //fondo.setTexture(Resources::playingTexture);
-    }
 }
 
 void Ui::setKeyPressed(sf::Keyboard::Key k) {
@@ -73,7 +96,7 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
                 changeState(help);
                 break;
             case 4:
-                changeState(options);
+                //changeState(options);
                 break;
             case 5:
                 game->getWindow()->close();
@@ -82,14 +105,14 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
                 break;
             }
         } else if (currentState == help) changeState(menu);
-//        else if (currentState == options) {
-            //            switch (select) {
-            //            case 0:
-            //                break;
-            //            default:
-            //                break;
-            //            }
-//        }
+        else if (currentState == options) {
+            switch (select) {
+            case 0:
+                break;
+            default:
+                break;
+            }
+        }
     }
 }
 
@@ -98,6 +121,10 @@ int Ui::getNPlayers() {
 }
 
 void Ui::setText() {
+    for (unsigned i = 0; i < texts.size(); ++i) {
+        texts[i].first = sf::Text();
+        texts[i].second = sf::Text();
+    }
     if (currentState == menu) {
         title.setString("LD48");
         texts[0].first.setString("2 Players");
@@ -113,11 +140,21 @@ void Ui::setText() {
         texts[3].second.setString("Help"     );
         texts[4].second.setString("Options"  );
         texts[5].second.setString("Exit"     );
-    }
-    else if (currentState == help) {
+    } else if (currentState == help) {
         title.setString("Help");
         texts[0].first.setString("Menu");
         texts[0].second.setString("Menu");
+    } else if (currentState == playing) {
+        for (unsigned i = 0; i < texts.size(); ++i) {
+            std::string aux;
+            switch (i%3) {
+            case 0: aux = "Player " + i%3;  break;
+            case 1: aux = "Points: ";       break;
+            case 2: aux = "0";              break;
+            }
+            texts[0].first.setString(aux);
+            texts[0].second.setString(aux);
+        }
     }
 }
 
@@ -140,11 +177,9 @@ void Ui::setPositions() {
         texts[i].first.setColor(sf::Color(0,0,0,100));
         texts[i].second.setColor(sf::Color(255,255,255,255));
         textRect = texts[i].first.getLocalBounds();
-        texts[i].first.setOrigin(textRect.left + textRect.width/2.0f,
-                                 textRect.top  + textRect.height/2.0f);
+        texts[i].first.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
         textRect = texts[i].second.getLocalBounds();
-        texts[i].second.setOrigin(textRect.left + textRect.width/2.0f,
-                                  textRect.top  + textRect.height/2.0f);
+        texts[i].second.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
     }
     if (currentState == menu) {
         title.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/((texts.size()*1.5))));
@@ -158,11 +193,13 @@ void Ui::setPositions() {
         title.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/((6*1.5))));
         texts[0].first.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
         texts[0].second.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
+    } else if (currentState == playing) {
+
     }
 }
 
 void Ui::changeSelected(int newSelected) {
-    texts[select].first.setColor(sf::Color(0,0,0,100));
+    if (texts.size() > select)texts[select].first.setColor(sf::Color(0,0,0,100));
     select = newSelected;
     texts[select].first.setColor(sf::Color(0,0,0,255));
 }

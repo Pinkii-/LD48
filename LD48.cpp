@@ -26,7 +26,7 @@ void LD48::init(int nPlayer) {
 
     for (unsigned i = 0; i < 2; ++i) {
         Player* p = new Player(i, this);
-        p->position = sf::Vector2f (800,230*(i+1));
+        p->position = sf::Vector2f ((window.getSize().x/2)-10*(nPlayers-1)+20*i, 230);
         addObject(p);
     }
 
@@ -77,6 +77,7 @@ void LD48::update(float deltaTime){
             spawnTimer = rand()%2 + 3;
         }
     }
+    ui.update();
 }
 
 void LD48::spawnCollectible(collectible type)
