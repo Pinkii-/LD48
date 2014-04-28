@@ -8,6 +8,7 @@ sf::Texture     Resources::player;
 sf::Texture     Resources::rodones;
 sf::Font        Resources::menuFont;
 sf::Shader      Resources::tunnelShader;
+sf::Shader      Resources::waterShader;
 
 void Resources::load() {
     textureTunnel.loadFromFile("resources/dirt.png");
@@ -18,4 +19,5 @@ void Resources::load() {
     rodones.loadFromFile("resources/rodones.png");
     menuFont.loadFromFile("resources/Call_me_maybe.ttf");
     tunnelShader.loadFromFile("shaders/tunnel.frag", sf::Shader::Fragment);
+    waterShader.loadFromFile("shaders/water.frag", sf::Shader::Fragment);
 }

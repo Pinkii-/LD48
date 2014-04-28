@@ -68,7 +68,7 @@ void LD48::update(float deltaTime){
                 it++;
         }
 
-        board.update();
+        board.update(deltaTime);
 
         spawnTimer -= deltaTime;
         if(spawnTimer <= 0)

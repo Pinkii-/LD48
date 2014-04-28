@@ -1,5 +1,6 @@
-uniform sampler2D tex;
-uniform sampler2D tex2;
+uniform sampler2D dirtTex;
+uniform sampler2D collisionTex;
+uniform sampler2D waterTex;
 
 
 vec3 mod289(vec3 x) {
@@ -68,16 +69,26 @@ void main(void)
 {
     float ct = 0.0;
     ct += snoise(gl_TexCoord[0].st*30.0)*20.0;
+    float water = 0.0;
+    water += snoise(gl_TexCoord[0].st*50.0)*5.0;
+
     for(int x = -6; x < 7; x++)
         for(int y = -6; y < 7; y++)
-            if(texture2D(tex, gl_TexCoord[0].st+vec2(x, y)*0.0014).r > 0.5)
+        {
+            if(texture2D(collisionTex, gl_TexCoord[0].st+vec2(x, y)*0.0014).r > 0.5)
                 ct++;
+            if(texture2D(waterTex, gl_TexCoord[0].st+vec2(x, y)*0.0014).r < 0.5)
+                water++;
+        }
 
-    if(ct > 65.0)
-        gl_FragColor = texture2D(tex2, gl_TexCoord[0].st);
+    if(ct > 65.0 && water > 20.0)
+        gl_FragColor = vec4(0, 0.5, 1, 1);
+    else if(ct > 65.0)
+        gl_FragColor = texture2D(dirtTex, gl_TexCoord[0].st);
     else if(ct > 45.0)
         gl_FragColor = vec4(0, 0, 0, 1);
     else
         gl_FragColor = vec4(0, 0, 0, 0);
 
+    //gl_FragColor = (texture2D(collisionTex, gl_TexCoord[0].st)+texture2D(waterTex, gl_TexCoord[0].st))/2.0;
 }

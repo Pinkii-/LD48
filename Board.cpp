@@ -7,13 +7,15 @@ using namespace std;
 
 Board::Board(){
 }
+sf::RenderTexture rt;
 
 Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
     height = pWindow->getSize().y;
     width = w;
 
-    collisionLayer.create(width, height, sf::Color::Black);
-	whiteImage.create(width, height, sf::Color::White);
+    collisionLayer.create(800, 800, sf::Color::Black);
+    waterLayer.create(200, 200, sf::Color::White);
+    rt.create(200, 200);
 
 	bgDirt.setTexture(Resources::textureDirt);
 
@@ -24,6 +26,12 @@ Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
 
 }
 
+void fillRect(sf::Image& i, sf::Color c, int x, int y, int w, int h)
+{
+    for(int xx = 0; xx < w; xx++)
+        for(int yy = 0; yy < h; yy++)
+            i.setPixel(x+xx, y+yy, c);
+}
 
 void Board::init () {
     prevPlayerPos[0] = game->getPlayer(0)->position;
@@ -31,48 +39,18 @@ void Board::init () {
     pWindow = game->getWindow();
 }
 
+float timelol = 0;
+void Board::update(float deltaTime) {
 
-void Board::updateCollisionLayer2(int xx, int yy, int tx, int ty)
-{/*
-    int itx = (int)collisionLayer.getSize().x;
-	int ity = (int)collisionLayer.getSize().y;
-	tx = min(itx, xx+tx);
-	ty = min(ity, yy+ty);
-	xx = max(0, xx);
-	yy = max(0, yy);
-
-	for(int x = xx; x < tx; x++)
-		for(int y = yy; y < ty; y++)
-		{
-			int ct = 0;
-			for(int x2 = max(0, x-6); x2 < min(itx, x+7); x2++)
-				for(int y2 = max(0, y-6); y2 < min(ity, y+7); y2++)
-					if(collisionLayer.getPixel(x2, y2).r == 255)
-						ct += rand()%4;
-
-			ct/= 2;
-			sf::Color c = sf::Color::Transparent;
-			if(ct > 45) c = sf::Color::Black;
-			if(ct > 65) c = Resources::textureTunnel.getPixel(x, y);
-			collisionLayer2.setPixel(x, y, c);
-
-        }*/
-}
-
-void Board::update() {
-    //sf::IntRect rectPlayerMovement[2];
-
+    timelol += deltaTime;
     currPlayerPos[0] = game->getPlayer(0)->position;
     currPlayerPos[1] = game->getPlayer(1)->position;
 
-    //rectPlayerMovement[0] = getProperRectangle(currPlayerPos[0], prevPlayerPos[0]);
-    //rectPlayerMovement[1] = getProperRectangle(currPlayerPos[1], prevPlayerPos[1]);
+    fillRect(collisionLayer, sf::Color::White, currPlayerPos[0].x - horOffset, currPlayerPos[0].y - TOP_MARGIN, 15, 15);
+    fillRect(collisionLayer, sf::Color::White, currPlayerPos[1].x - horOffset, currPlayerPos[1].y - TOP_MARGIN, 15, 15);
 
-    collisionLayer.copy(whiteImage, currPlayerPos[0].x - horOffset, currPlayerPos[0].y - TOP_MARGIN, sf::IntRect(0,0,15,15));
-   // updateCollisionLayer2(currPlayerPos[0].x - horOffset-10, currPlayerPos[0].y - TOP_MARGIN-10, 35, 35);
-    collisionLayer.copy(whiteImage, currPlayerPos[1].x - horOffset, currPlayerPos[1].y - TOP_MARGIN, sf::IntRect(0,0,15,15));
-    //updateCollisionLayer2(currPlayerPos[1].x - horOffset-10, currPlayerPos[1].y - TOP_MARGIN-10, 35, 35);
-//    updateCollisionLayer2(0, 0, 800, 800);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        fillRect(waterLayer, sf::Color::Blue, (currPlayerPos[1].x - horOffset)/4, (currPlayerPos[1].y - TOP_MARGIN)/4, 3, 3);
 
     prevPlayerPos[0] = currPlayerPos[0];
     prevPlayerPos[1] = currPlayerPos[1];
@@ -81,11 +59,23 @@ void Board::update() {
 
 void Board::draw() {
     collisionLayerTexture.loadFromImage(collisionLayer);
-    bgTunnel.setTexture(collisionLayerTexture);
+    waterLayerTexture.loadFromImage(waterLayer);
+
+    sf::Sprite spr;
+    spr.setTexture(waterLayerTexture);
+    Resources::waterShader.setParameter("time", timelol);
+    Resources::waterShader.setParameter("collisionTex", collisionLayerTexture);
+    rt.draw(spr, &Resources::waterShader);
+    rt.display();
+    waterLayer = rt.getTexture().copyToImage();
 
     pWindow->draw(bgDirt);
-    Resources::tunnelShader.setParameter("tex2", Resources::textureTunnel);
+
+    Resources::tunnelShader.setParameter("collisionTex", collisionLayerTexture);
+    Resources::tunnelShader.setParameter("waterTex", waterLayerTexture);
+    bgTunnel.setTexture(Resources::textureTunnel);
     pWindow->draw(bgTunnel, &Resources::tunnelShader);
+
 }
 
 boardType Board::getBoardType(sf::Vector2f pos) {

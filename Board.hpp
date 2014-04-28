@@ -10,7 +10,7 @@ class Board {
 public:
     Board();
     Board(LD48* g, int w);
-    void update();
+    void update(float deltaTime);
     void draw();
     void init();
 
@@ -28,10 +28,11 @@ private:
 
 public:
     int horOffset;
-	sf::Image collisionLayer;
-	sf::Image whiteImage;
+    sf::Image collisionLayer;
+    sf::Image waterLayer;
 
     sf::Texture collisionLayerTexture;
+    sf::Texture waterLayerTexture;
 
     // Board sprites
     sf::Sprite bgDirt;

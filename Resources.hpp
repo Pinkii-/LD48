@@ -13,6 +13,7 @@ public:
     static sf::Texture rodones;
     static sf::Font menuFont;
     static sf::Shader tunnelShader;
+    static sf::Shader waterShader;
 };
 
 #endif // RESOURCES_HPP

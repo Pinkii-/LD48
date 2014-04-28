@@ -29,5 +29,6 @@ HEADERS += \
     Collectible.hpp
 
 OTHER_FILES += \
-    shaders/tunnel.frag
+    shaders/tunnel.frag \
+    shaders/water.frag
 
