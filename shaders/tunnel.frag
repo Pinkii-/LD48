@@ -81,14 +81,14 @@ void main(void)
                 water++;
         }
 
-    if(ct > 65.0 && water > 20.0)
+    if(ct > 75.0 && water > 20.0)
         gl_FragColor = vec4(0, 0.5, 1, 1);
-    else if(ct > 65.0)
+    else if(ct > 75.0)
         gl_FragColor = texture2D(dirtTex, gl_TexCoord[0].st);
     else if(ct > 45.0)
         gl_FragColor = vec4(0, 0, 0, 1);
     else
         gl_FragColor = vec4(0, 0, 0, 0);
 
-    //gl_FragColor = (texture2D(collisionTex, gl_TexCoord[0].st)+texture2D(waterTex, gl_TexCoord[0].st))/2.0;
+//    gl_FragColor = (texture2D(collisionTex, gl_TexCoord[0].st)+gl_FragColor)/2.0;
 }
