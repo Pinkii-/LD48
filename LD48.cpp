@@ -91,7 +91,7 @@ void LD48::update(float deltaTime){
 
 void LD48::spawnCollectible(collectible type)
 {
-    int x = rand()%800 + board.horOffset;
+    int x = rand()%800 + board.horOffset -Resources::rodones.getsize()/4;
     int y = rand()%800 + TOP_MARGIN;
 
     addObject(new Collectible(this, type, sf::Vector2f(x, y)));
