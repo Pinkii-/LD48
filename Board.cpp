@@ -96,3 +96,8 @@ boardType Board::getBoardType(sf::Vector2f pos) {
     if(sumColorType >= 4) return full;
     else return digged;
 }
+
+int Board::getWidth() {
+    return width;
+}
+

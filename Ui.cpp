@@ -60,7 +60,7 @@ void Ui::update() {
 }
 
 void Ui::updateScore() {
-    for (unsigned i = 0; i < nPlayers; ++i) {
+    for (int i = 0; i < nPlayers; ++i) {
         texts[i*3+2].first.setString(std::to_string(game->getPlayer(i)->getPoints()));
         texts[i*3+2].second.setString(std::to_string(game->getPlayer(i)->getPoints()));
     }
@@ -148,12 +148,12 @@ void Ui::setText() {
         for (unsigned i = 0; i < texts.size(); ++i) {
             std::string aux;
             switch (i%3) {
-            case 0: aux = "Player " + i%3;  break;
-            case 1: aux = "Points: ";       break;
-            case 2: aux = "0";              break;
+            case 0: aux = "Player  " + std::to_string((i/3)+1); break;
+            case 1: aux = "Points";                             break;
+            case 2: aux = "0";                                  break;
             }
-            texts[0].first.setString(aux);
-            texts[0].second.setString(aux);
+            texts[i].first.setString(aux);
+            texts[i].second.setString(aux);
         }
     }
 }
@@ -169,13 +169,20 @@ void Ui::setPositions() {
     title.setOrigin(textRect.left + textRect.width/2.0f,
                     textRect.top  + textRect.height/2.0f);
     for (unsigned i = 0; i < texts.size(); ++i) {
+        sf::Color firstColor = sf::Color(0,0,0,100);
+        sf::Color secondColor = sf::Color(255,255,255,255);
+        if (currentState == playing) {
+            if (i%3 != 0) msf = 50;
+            else msf = 70;
+            firstColor = sf::Color(0,0,0,200);
+        }
         texts[i].first.setCharacterSize(msf);
         texts[i].second.setCharacterSize(msf);
         texts[i].first.setFont(Resources::menuFont);
         texts[i].second.setFont(Resources::menuFont);
         texts[i].second.setStyle(sf::Text::Bold);
-        texts[i].first.setColor(sf::Color(0,0,0,100));
-        texts[i].second.setColor(sf::Color(255,255,255,255));
+        texts[i].first.setColor(firstColor);
+        texts[i].second.setColor(secondColor);
         textRect = texts[i].first.getLocalBounds();
         texts[i].first.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
         textRect = texts[i].second.getLocalBounds();
@@ -194,12 +201,25 @@ void Ui::setPositions() {
         texts[0].first.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
         texts[0].second.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
     } else if (currentState == playing) {
-
+        sf::Vector2f position;
+        for (int i = 0; i < nPlayers; ++i) {
+            int bWidth = game->getBoard()->getWidth();
+            if (i == 0) position = sf::Vector2f((windowSize.x-bWidth)/4.f,(windowSize.y-bWidth+(bWidth/8)));
+            else if (i == 1) position = sf::Vector2f((windowSize.x-bWidth)/2+bWidth+texts[i*3].first.getLocalBounds().width,(windowSize.y-bWidth+(bWidth/8)));
+            else if (i == 2) position = sf::Vector2f((windowSize.x-bWidth)/4.f,(windowSize.y-bWidth+(bWidth*6/8)));
+            else if (i == 3) position = sf::Vector2f((windowSize.x-bWidth)/2+bWidth+texts[i*3].first.getLocalBounds().width,(windowSize.y-bWidth+(bWidth*6/8)));
+            texts[i*3].first.setPosition(sf::Vector2f(position.x,position.y));
+            texts[i*3].second.setPosition(sf::Vector2f(position.x,position.y));
+            texts[i*3+1].first.setPosition(sf::Vector2f(position.x-50,position.y+50));
+            texts[i*3+1].second.setPosition(sf::Vector2f(position.x-50,position.y+50));
+            texts[i*3+2].first.setPosition(sf::Vector2f(position.x+60,position.y+50));
+            texts[i*3+2].second.setPosition(sf::Vector2f(position.x+60,position.y+50));
+        }
     }
 }
 
 void Ui::changeSelected(int newSelected) {
     if (texts.size() > select)texts[select].first.setColor(sf::Color(0,0,0,100));
     select = newSelected;
-    texts[select].first.setColor(sf::Color(0,0,0,255));
+    texts[select].first.setColor(sf::Color(0,0,0,200));
 }

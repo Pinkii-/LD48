@@ -97,11 +97,12 @@ void LD48::spawnRandomCollectible()
 }
 
 void LD48::draw(){
-    ui.draw();
-    if (gameState == playing) {
+    if (gameState != playing) ui.draw();
+    else {
         board.draw();
         for(std::list<Object*>::iterator it = objects.begin(); it != objects.end(); it++)
             (*it)->draw();
+        ui.draw();
     }
 }
 

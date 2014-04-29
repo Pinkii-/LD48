@@ -15,6 +15,7 @@ public:
     void init();
 
     boardType getBoardType(sf::Vector2f pos);
+    int getWidth();
 
 private:
 
