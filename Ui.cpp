@@ -45,8 +45,11 @@ void Ui::update() {
             setText();
             setPositions();
             changeSelected(0);
-        } else if (currentState == options) {
-            texts.resize(0);
+        } else if (currentState == credits) {
+            texts.resize(10);
+            setText();
+            setPositions();
+            changeSelected(5);
         } else if (currentState == playing) {
             texts.resize(nPlayers * 3);
             setText();
@@ -71,12 +74,12 @@ void Ui::changeState(state s) {
 }
 
 void Ui::setKeyPressed(sf::Keyboard::Key k) {
-    if (k == sf::Keyboard::Up or k == sf::Keyboard::W) {
+    if ((k == sf::Keyboard::Up or k == sf::Keyboard::W) and currentState != credits) {
         int aux = select;
         if (aux-1<0) aux = texts.size();
         changeSelected((aux-1)%texts.size());
     }
-    else if (k == sf::Keyboard::Down or k == sf::Keyboard::S) changeSelected((select+1)%texts.size());
+    else if ((k == sf::Keyboard::Down or k == sf::Keyboard::S) and currentState != credits) changeSelected((select+1)%texts.size());
     else if (k == sf::Keyboard::Return) {
         if (currentState == menu) {
             switch (select) {
@@ -96,7 +99,7 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
                 changeState(help);
                 break;
             case 4:
-                //changeState(options);
+                changeState(credits);
                 break;
             case 5:
                 game->getWindow()->close();
@@ -105,14 +108,7 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
                 break;
             }
         } else if (currentState == help) changeState(menu);
-        else if (currentState == options) {
-            switch (select) {
-            case 0:
-                break;
-            default:
-                break;
-            }
-        }
+        else if (currentState == credits) changeState(menu);
     }
 }
 
@@ -131,14 +127,14 @@ void Ui::setText() {
         texts[1].first.setString("3 Players");
         texts[2].first.setString("4 Players");
         texts[3].first.setString("Help"     );
-        texts[4].first.setString("Options"  );
+        texts[4].first.setString("Credits"  );
         texts[5].first.setString("Exit"     );
 
         texts[0].second.setString("2 Players");
         texts[1].second.setString("3 Players");
         texts[2].second.setString("4 Players");
         texts[3].second.setString("Help"     );
-        texts[4].second.setString("Options"  );
+        texts[4].second.setString("Credits"  );
         texts[5].second.setString("Exit"     );
     } else if (currentState == help) {
         title.setString("Help");
@@ -155,6 +151,21 @@ void Ui::setText() {
             texts[i].first.setString(aux);
             texts[i].second.setString(aux);
         }
+    } else if (currentState == credits) {
+        title.setString("Credits");
+        texts[0].first.setString("Dirbaio Minikiwi" );
+        texts[1].first.setString("kaitokidi"        );
+        texts[2].first.setString("Marce Coll"       );
+        texts[3].first.setString("Pinkii"          );
+        texts[4].first.setString("Nikita Kieffer"   );
+        texts[5].first.setString("Menu"             );
+
+        texts[0].second.setString("Dirbaio Minikiwi" );
+        texts[1].second.setString("kaitokidi"        );
+        texts[2].second.setString("Marce Coll"       );
+        texts[3].second.setString("Pinkii"          );
+        texts[4].second.setString("Nikita Kieffer"   );
+        texts[5].second.setString("Menu"             );
     }
 }
 
@@ -175,7 +186,7 @@ void Ui::setPositions() {
             if (i%3 != 0) msf = 50;
             else msf = 70;
             firstColor = sf::Color(0,0,0,200);
-        }
+        } else if (currentState == credits) msf = 50;
         texts[i].first.setCharacterSize(msf);
         texts[i].second.setCharacterSize(msf);
         texts[i].first.setFont(Resources::menuFont);
@@ -216,10 +227,34 @@ void Ui::setPositions() {
             texts[i*3+2].second.setPosition(sf::Vector2f(position.x+60,position.y+50));
         }
     }
+    else if (currentState == credits) {
+        title.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/((6*1.5))));
+        texts[0].first.setScale(1.035,1);
+        texts[0].first.setColor(sf::Color(153,255,153,200));
+        texts[0].first.setPosition(sf::Vector2f(windowSize.x/4,windowSize.y*2.5/((6*1.5))));
+        texts[0].second.setPosition(sf::Vector2f(windowSize.x/4,windowSize.y*2.5/((6*1.5))));
+        texts[1].first.setScale(1.03,1);
+        texts[1].first.setColor(sf::Color(255,255,153,200));
+        texts[1].first.setPosition(sf::Vector2f(windowSize.x/2.2,windowSize.y*2.2/((6*1.5))));
+        texts[1].second.setPosition(sf::Vector2f(windowSize.x/2.2,windowSize.y*2.2/((6*1.5))));
+        texts[2].first.setScale(1.03,1);
+        texts[2].first.setColor(sf::Color(255,153,153,200));
+        texts[2].first.setPosition(sf::Vector2f(windowSize.x/1.55,windowSize.y*2.1/((6*1.5))));
+        texts[2].second.setPosition(sf::Vector2f(windowSize.x/1.55,windowSize.y*2.1/((6*1.5))));
+        texts[3].first.setColor(sf::Color(255,153,255,200));
+        texts[3].first.setPosition(sf::Vector2f(windowSize.x/1.25,windowSize.y*1.6/((6*1.5))));
+        texts[3].second.setPosition(sf::Vector2f(windowSize.x/1.25,windowSize.y*1.6/((6*1.5))));
+        texts[4].first.setScale(1.03,1);
+        texts[4].first.setColor(sf::Color(153,255,255,200));
+        texts[4].first.setPosition(sf::Vector2f(windowSize.x/1.07,windowSize.y/(12)));
+        texts[4].second.setPosition(sf::Vector2f(windowSize.x/1.07,windowSize.y/(12)));
+        texts[5].first.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
+        texts[5].second.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
+    }
 }
 
 void Ui::changeSelected(int newSelected) {
-    if (texts.size() > select)texts[select].first.setColor(sf::Color(0,0,0,100));
+    if (texts.size() > select and currentState != credits)texts[select].first.setColor(sf::Color(0,0,0,100));
     select = newSelected;
     texts[select].first.setColor(sf::Color(0,0,0,200));
 }
