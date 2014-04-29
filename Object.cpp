@@ -7,8 +7,7 @@ Object::Object(LD48 *game, sf::Vector2f size, sf::Texture &tex,  sf::Vector2i sp
     sprite.setTexture(tex);
 }
 
-void Object::draw()
-{
+void Object::draw() {
     sprite.setScale(size.x/tex.getSize().x*spriteCount.x, size.y/tex.getSize().y*spriteCount.y);
     sprite.setTextureRect(sf::IntRect(
                               spriteNum.x*tex.getSize().x/spriteCount.x,
@@ -20,8 +19,7 @@ void Object::draw()
     game->getWindow()->draw(sprite);
 }
 
-bool Object::collidesWith(Object *b)
-{
+bool Object::collidesWith(Object *b) {
     if(position.x + size.x < b->position.x) return false;
     if(position.y + size.y < b->position.y) return false;
     if(b->position.x + b->size.x < position.x) return false;
@@ -30,12 +28,10 @@ bool Object::collidesWith(Object *b)
     return true;
 }
 
-void Object::update(float deltaTime)
-{
-
+void Object::update(float deltaTime) {
+    (void)deltaTime;
 }
 
-void Object::collidedWith(Object *b)
-{
-
+void Object::collidedWith(Object *b) {
+    (void)b;
 }

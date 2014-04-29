@@ -9,7 +9,7 @@ class LD48;
 class Board {
 public:
     Board();
-    Board(LD48* g, int w);
+    Board(LD48* g, int w, int nPlayers);
     void update(float deltaTime);
     void draw();
     void init();
@@ -39,8 +39,8 @@ public:
     sf::Sprite bgDirt;
 	sf::Sprite bgTunnel;
 
-    sf::Vector2f currPlayerPos[2];
-    sf::Vector2f prevPlayerPos[2];
+    std::vector<sf::Vector2f> currPlayerPos;
+    std::vector<sf::Vector2f> prevPlayerPos;
 
     sf::RenderWindow* pWindow;
 };

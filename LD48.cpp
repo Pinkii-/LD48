@@ -24,7 +24,7 @@ void LD48::init(int nPlayer) {
     nPlayers = nPlayer;
     spawnTimer = rand()%2 + 3;;
 
-    for (unsigned i = 0; i < 2; ++i) {
+    for (int i = 0; i < nPlayers; ++i) {
         Player* p = new Player(i, this);
         p->position = sf::Vector2f ((window.getSize().x/2)-10*(nPlayers-1)+20*i, 230);
         addObject(p);
@@ -37,7 +37,7 @@ void LD48::init(int nPlayer) {
     }
 
     float boardWidth = 800;
-    board = Board(this, boardWidth);
+    board = Board(this, boardWidth, nPlayers);
 
     for(int i = 0; i < N_STARTING_OBJECTS; i++)
         spawnRandomCollectible();
@@ -169,6 +169,24 @@ void LD48::keyPressed(sf::Event event) {
                 isKeyPressed[2] = right;
                 break;
             default:
+                if (nPlayers > 3) {
+                    switch (event.key.code) {
+                    case sf::Keyboard::Numpad1:
+                        isKeyPressed[3] = left;
+                        break;
+                    case sf::Keyboard::Numpad5:
+                        isKeyPressed[3] = up;
+                        break;
+                    case sf::Keyboard::Numpad2:
+                        isKeyPressed[3] = down;
+                        break;
+                    case sf::Keyboard::Numpad3:
+                        isKeyPressed[3] = right;
+                        break;
+                    default:
+                        break;
+                    }
+                }
                 break;
             }
         }
@@ -218,6 +236,24 @@ void LD48::keyReleased(sf::Event event) {
                 if(isKeyPressed[2] == right) isKeyPressed[2] = none;
                 break;
             default:
+                if (nPlayers > 2) {
+                    switch (event.key.code) {
+                    case sf::Keyboard::Numpad1:
+                        if(isKeyPressed[3] == left) isKeyPressed[3] = none;
+                        break;
+                    case sf::Keyboard::Numpad5:
+                        if(isKeyPressed[3] == up) isKeyPressed[3] = none;
+                        break;
+                    case sf::Keyboard::Numpad2:
+                        if(isKeyPressed[3] == down) isKeyPressed[3] = none;
+                        break;
+                    case sf::Keyboard::Numpad3:
+                        if(isKeyPressed[3] == right) isKeyPressed[3] = none;
+                        break;
+                    default:
+                        break;
+                    }
+                }
                 break;
             }
         }

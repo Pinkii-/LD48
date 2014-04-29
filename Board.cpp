@@ -9,7 +9,7 @@ Board::Board(){
 }
 sf::RenderTexture rt;
 
-Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
+Board::Board(LD48* g, int w, int nPlayers) : game(g), pWindow(g->getWindow()){
     height = pWindow->getSize().y;
     width = w;
 
@@ -24,6 +24,9 @@ Board::Board(LD48* g, int w) : game(g), pWindow(g->getWindow()){
     bgDirt.setPosition(sf::Vector2f(horOffset - 590, 0));
 	bgTunnel.setPosition(sf::Vector2f(horOffset, TOP_MARGIN));
 
+    currPlayerPos = std::vector<sf::Vector2f>(nPlayers);
+    prevPlayerPos = std::vector<sf::Vector2f>(nPlayers);
+
 }
 
 void fillRect(sf::Image& i, sf::Color c, int x, int y, int w, int h)
@@ -34,8 +37,7 @@ void fillRect(sf::Image& i, sf::Color c, int x, int y, int w, int h)
 }
 
 void Board::init () {
-    prevPlayerPos[0] = game->getPlayer(0)->position;
-    prevPlayerPos[1] = game->getPlayer(1)->position;
+    for (unsigned i = 0; i < prevPlayerPos.size(); ++i) prevPlayerPos[i] = game->getPlayer(i)->position;
     pWindow = game->getWindow();
 }
 
@@ -43,18 +45,13 @@ float timelol = 0;
 void Board::update(float deltaTime) {
 
     timelol += deltaTime;
-    currPlayerPos[0] = game->getPlayer(0)->position;
-    currPlayerPos[1] = game->getPlayer(1)->position;
-
-    fillRect(collisionLayer, sf::Color::White, currPlayerPos[0].x - horOffset, currPlayerPos[0].y - TOP_MARGIN, 15, 15);
-    fillRect(collisionLayer, sf::Color::White, currPlayerPos[1].x - horOffset, currPlayerPos[1].y - TOP_MARGIN, 15, 15);
-
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    for (unsigned i = 0; i < currPlayerPos.size(); ++i) {
+        currPlayerPos[i] = game->getPlayer(i)->position;
+        fillRect(collisionLayer, sf::Color::White, currPlayerPos[i].x - horOffset, currPlayerPos[i].y - TOP_MARGIN, 15, 15);
+         prevPlayerPos[i] = currPlayerPos[i];
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // So Mcuh Provisional
         fillRect(waterLayer, sf::Color::Blue, (currPlayerPos[1].x - horOffset)/4, (currPlayerPos[1].y - TOP_MARGIN)/4, 3, 3);
-
-    prevPlayerPos[0] = currPlayerPos[0];
-    prevPlayerPos[1] = currPlayerPos[1];
-
 }
 
 void Board::draw() {

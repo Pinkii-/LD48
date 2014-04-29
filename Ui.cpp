@@ -153,19 +153,19 @@ void Ui::setText() {
         }
     } else if (currentState == credits) {
         title.setString("Credits");
-        texts[0].first.setString("Dirbaio Minikiwi" );
-        texts[1].first.setString("kaitokidi"        );
-        texts[2].first.setString("Marce Coll"       );
+        texts[0].first.setString("Dirbaio Minikiwi");
+        texts[1].first.setString("kaitokidi"       );
+        texts[2].first.setString("Marce Coll"      );
         texts[3].first.setString("Pinkii"          );
-        texts[4].first.setString("Nikita Kieffer"   );
-        texts[5].first.setString("Menu"             );
+        texts[4].first.setString("Nikita"          );
+        texts[5].first.setString("Menu"            );
 
-        texts[0].second.setString("Dirbaio Minikiwi" );
-        texts[1].second.setString("kaitokidi"        );
-        texts[2].second.setString("Marce Coll"       );
+        texts[0].second.setString("Dirbaio Minikiwi");
+        texts[1].second.setString("kaitokidi"       );
+        texts[2].second.setString("Marce Coll"      );
         texts[3].second.setString("Pinkii"          );
-        texts[4].second.setString("Nikita Kieffer"   );
-        texts[5].second.setString("Menu"             );
+        texts[4].second.setString("Nikita"          );
+        texts[5].second.setString("Menu"            );
     }
 }
 
@@ -246,8 +246,8 @@ void Ui::setPositions() {
         texts[3].second.setPosition(sf::Vector2f(windowSize.x/1.25,windowSize.y*1.6/((6*1.5))));
         texts[4].first.setScale(1.03,1);
         texts[4].first.setColor(sf::Color(153,255,255,200));
-        texts[4].first.setPosition(sf::Vector2f(windowSize.x/1.07,windowSize.y/(12)));
-        texts[4].second.setPosition(sf::Vector2f(windowSize.x/1.07,windowSize.y/(12)));
+        texts[4].first.setPosition(sf::Vector2f(windowSize.x/1.04,windowSize.y*1.65/((6*1.5))));
+        texts[4].second.setPosition(sf::Vector2f(windowSize.x/1.04,windowSize.y*1.65/((6*1.5))));
         texts[5].first.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
         texts[5].second.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
     }
