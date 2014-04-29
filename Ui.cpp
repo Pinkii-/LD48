@@ -50,7 +50,7 @@ void Ui::update() {
             setText();
             setPositions();
             changeSelected(5);
-        } else if (currentState == playing) {
+        } else if (currentState == playing or currentState == winned) {
             texts.resize(nPlayers * 3);
             setText();
             setPositions();
@@ -112,6 +112,11 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
     }
 }
 
+void Ui::win(int w) {
+    winner = w;
+    changeState(winned);
+}
+
 int Ui::getNPlayers() {
     return nPlayers;
 }
@@ -140,7 +145,7 @@ void Ui::setText() {
         title.setString("Help");
         texts[0].first.setString("Menu");
         texts[0].second.setString("Menu");
-    } else if (currentState == playing) {
+    } else if (currentState == playing or currentState == winned) {
         for (unsigned i = 0; i < texts.size(); ++i) {
             std::string aux;
             switch (i%3) {
@@ -150,6 +155,11 @@ void Ui::setText() {
             }
             texts[i].first.setString(aux);
             texts[i].second.setString(aux);
+            if (currentState == winned) {
+                std::pair<sf::Text,sf::Text> aux;
+                aux.first.setString("The winner is: Player "+std::to_string(winner));
+                texts.push_back(aux);
+            }
         }
     } else if (currentState == credits) {
         title.setString("Credits");

@@ -8,6 +8,7 @@ LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     , ui(this){
     ui.init();
     srand (time(NULL));
+    maxPoints = 10;
 }
 
 LD48::~LD48() {}
@@ -22,7 +23,7 @@ void LD48::init(int nPlayer) {
     ui.changeState(playing);
     gameState = playing;
     nPlayers = nPlayer;
-    spawnTimer = rand()%2 + 3;;
+    spawnTimer = rand()%2 + 3;
 
     for (int i = 0; i < nPlayers; ++i) {
         Player* p = new Player(i, this);
@@ -75,6 +76,14 @@ void LD48::update(float deltaTime){
         {
             spawnRandomCollectible();
             spawnTimer = rand()%2 + 3;
+        }
+        for (int i = 0; i < nPlayers; ++i) {
+            if (getPlayer(i)->getPoints() >= maxPoints) {
+                ui.win(i);
+                gameState = winned;
+                break;
+            }
+            ++i;
         }
     }
     ui.update();

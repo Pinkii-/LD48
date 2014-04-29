@@ -12,6 +12,7 @@ public:
     void updateScore();
     void changeState(state s);
     void setKeyPressed(sf::Keyboard::Key k);
+    void win(int w);
     int getNPlayers();
 private:
     LD48* game;
@@ -22,6 +23,7 @@ private:
     state currentState;
     state beforeState;
     int nPlayers;
+    int winner;
     unsigned select;
     void setText();
     void setPositions();

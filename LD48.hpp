@@ -35,6 +35,7 @@ private:
 
     std::vector<dir> isKeyPressed;
     int nPlayers;
+    int maxPoints;
     float spawnTimer;
 };
 
