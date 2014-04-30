@@ -18,6 +18,7 @@ public:
     void keyPressed(sf::Event event);
     void keyReleased(sf::Event event);
     void setState(state s);
+    void setMaxPoints(int p);
     int getNplayer();
     dir getDirection(int id);
     Board* getBoard();

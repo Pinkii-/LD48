@@ -8,7 +8,6 @@ LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     , ui(this){
     ui.init();
     srand (time(NULL));
-    maxPoints = 1;
 }
 
 LD48::~LD48() {}
@@ -20,8 +19,8 @@ void LD48::addObject(Object* obj)
 }
 
 void LD48::init(int nPlayer) {
-    ui.changeState(playing);
-    gameState = playing;
+    ui.changeState(selectMaxPoints);
+    gameState = selectMaxPoints;
     nPlayers = nPlayer;
     spawnTimer = rand()%2 + 3;
 
@@ -106,7 +105,7 @@ void LD48::spawnRandomCollectible()
 }
 
 void LD48::draw(){
-    if (gameState != playing and gameState != winned) ui.draw();
+    if (gameState != playing and gameState != winned and gameState != selectMaxPoints) ui.draw();
     else {
         board.draw();
         for(std::list<Object*>::iterator it = objects.begin(); it != objects.end(); it++)
@@ -123,7 +122,6 @@ void LD48::processEvents(){
             window.close();
             break;
         case sf::Event::KeyPressed:
-            if (event.key.code == sf::Keyboard::Escape) window.close();
             if (gameState == playing) keyPressed(event);
             else ui.setKeyPressed(event.key.code);
             break;
@@ -138,6 +136,9 @@ void LD48::processEvents(){
 
 void LD48::keyPressed(sf::Event event) {
     switch (event.key.code) {
+    case sf::Keyboard::Escape:
+        ui.changeState(menu);
+        break;
     case sf::Keyboard::A:
         isKeyPressed[0] = left;
         break;
@@ -270,6 +271,10 @@ void LD48::keyReleased(sf::Event event) {
     }
 }
 
+void LD48::setState(state s) {
+    gameState = s;
+}
+
 dir LD48::getDirection(int i) {
     return isKeyPressed[i];
 }
@@ -298,4 +303,10 @@ int LD48::getNplayer(){
     return nPlayers;
 }
 
+
+void LD48::setMaxPoints(int p) {
+    maxPoints = p;
+    gameState = playing;
+    ui.changeState(playing);
+}
 

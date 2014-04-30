@@ -3,7 +3,7 @@
 
 Game::Game(int scrwidth, int scrheight, std::string title, int style)
     : window(sf::VideoMode(scrwidth,scrheight),title,style) {
-    window.setMouseCursorVisible(true); //Config as you want
+    window.setMouseCursorVisible(false); //Config as you want
     window.setVerticalSyncEnabled(true); //Config as you want
 	Resources::load();
 }

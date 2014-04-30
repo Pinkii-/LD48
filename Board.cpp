@@ -62,7 +62,7 @@ void Board::draw() {
     spr.setTexture(waterLayerTexture);
     Resources::waterShader.setParameter("time", timelol);
     Resources::waterShader.setParameter("collisionTex", collisionLayerTexture);
-    rt.draw(spr/*, &Resources::waterShader*/);
+    rt.draw(spr, &Resources::waterShader);
     rt.display();
     waterLayer = rt.getTexture().copyToImage();
 
@@ -71,7 +71,7 @@ void Board::draw() {
     Resources::tunnelShader.setParameter("collisionTex", collisionLayerTexture);
     Resources::tunnelShader.setParameter("waterTex", waterLayerTexture);
     bgTunnel.setTexture(Resources::textureTunnel);
-    pWindow->draw(bgTunnel/*, &Resources::tunnelShader*/);
+    pWindow->draw(bgTunnel, &Resources::tunnelShader);
 }
 
 boardType Board::getBoardType(sf::Vector2f pos) {

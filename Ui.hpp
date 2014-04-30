@@ -10,6 +10,7 @@ public:
     void init();
     void update();
     void updateScore();
+    void updateMaxPoints();
     void changeState(state s);
     void setKeyPressed(sf::Keyboard::Key k);
     void win(int w);
@@ -25,6 +26,7 @@ private:
     state beforeState;
     int nPlayers;
     int winner;
+    int maxPoints;
     unsigned select;
     void setText();
     void setPositions();

@@ -27,7 +27,7 @@ typedef std::vector<bool> VBool;
 typedef std::vector<float> VFloat;
 
 enum state {
-    menu, help, credits, playing, unstarted, winned
+    menu, help, credits, playing, unstarted, winned, selectMaxPoints
 };
 
 // Per afegir un debuff, afegirlo despres del dB_speed o es
