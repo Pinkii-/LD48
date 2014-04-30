@@ -15,6 +15,7 @@ void Ui::draw() {
             game->getWindow()->draw(texts[i].first);
         }
     } else {
+        if (currentState == winned) game->getWindow()->draw(winnedBackground);
         for(unsigned i = 0; i < texts.size(); ++i) {
             game->getWindow()->draw(texts[i].second);
             game->getWindow()->draw(texts[i].first);
@@ -109,8 +110,9 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
             }
         } else if (currentState == help) changeState(menu);
         else if (currentState == credits) changeState(menu);
-        else if (currentState == winned) game->init(nPlayers);
+        else if (currentState == winned) changeState(menu);
     }
+    else if (k == sf::Keyboard::Space and currentState == winned) game->init(nPlayers);
 }
 
 void Ui::win(int w) {
@@ -161,6 +163,9 @@ void Ui::setText() {
             std::pair<sf::Text,sf::Text> aux;
             aux.first.setString("The winner is  Player "+std::to_string(winner+1));
             aux.second.setString("The winner is  Player "+std::to_string(winner+1));
+            texts.push_back(aux);
+            aux.first.setString("Press Enter to Menu or Space to restart");
+            aux.second.setString("Press Enter to Menu or Space to restart");
             texts.push_back(aux);
         }
     } else if (currentState == credits) {
@@ -239,9 +244,19 @@ void Ui::setPositions() {
             texts[i*3+2].second.setPosition(sf::Vector2f(position.x+60,position.y+50));
         }
         if (currentState == winned) {
-            texts[texts.size()-1].first.setScale(1.035,1);
-            texts[texts.size()-1].first.setPosition(windowSize.x/2,windowSize.y/2);
-            texts[texts.size()-1].second.setPosition(windowSize.x/2,windowSize.y/2);
+            texts[nPlayers*3].first.setScale(1.035,1);
+            texts[nPlayers*3].first.setPosition(windowSize.x/2,(windowSize.y/2)-texts[nPlayers*3].first.getLocalBounds().height);
+            texts[nPlayers*3].second.setPosition(windowSize.x/2,(windowSize.y/2)-texts[nPlayers*3].first.getLocalBounds().height);
+            texts[nPlayers*3+1].first.setScale(1.035,1);
+            texts[nPlayers*3+1].first.setPosition(windowSize.x/2,(windowSize.y/2)+texts[nPlayers*3].first.getLocalBounds().height);
+            texts[nPlayers*3+1].second.setPosition(windowSize.x/2,(windowSize.y/2)+texts[nPlayers*3].first.getLocalBounds().height);
+            winnedBackground = sf::RectangleShape(sf::Vector2f(texts[nPlayers*3+1].second.getLocalBounds().width*1.1,texts[nPlayers*3].second.getLocalBounds().height*4));
+            textRect = winnedBackground.getLocalBounds();
+            winnedBackground.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
+            winnedBackground.setPosition(windowSize.x/2,windowSize.y/2);
+            winnedBackground.setFillColor(sf::Color(255,215,0,230));
+            winnedBackground.setOutlineColor(sf::Color::Yellow);
+            winnedBackground.setOutlineThickness(1);
         }
     }
     else if (currentState == credits) {

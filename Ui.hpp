@@ -20,6 +20,7 @@ private:
     sf::Font font;
     sf::Text title;
     std::vector<std::pair<sf::Text,sf::Text> > texts;
+    sf::RectangleShape winnedBackground;
     state currentState;
     state beforeState;
     int nPlayers;
