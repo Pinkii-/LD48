@@ -8,7 +8,7 @@ LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
     , ui(this){
     ui.init();
     srand (time(NULL));
-    maxPoints = 10;
+    maxPoints = 1;
 }
 
 LD48::~LD48() {}
@@ -25,6 +25,7 @@ void LD48::init(int nPlayer) {
     nPlayers = nPlayer;
     spawnTimer = rand()%2 + 3;
 
+    objects = std::list<Object*>();
     for (int i = 0; i < nPlayers; ++i) {
         Player* p = new Player(i, this);
         p->position = sf::Vector2f ((window.getSize().x/2)-10*(nPlayers-1)+20*i, 230);
@@ -83,7 +84,6 @@ void LD48::update(float deltaTime){
                 gameState = winned;
                 break;
             }
-            ++i;
         }
     }
     ui.update();
@@ -91,7 +91,7 @@ void LD48::update(float deltaTime){
 
 void LD48::spawnCollectible(collectible type)
 {
-    int x = rand()%800 + board.horOffset -Resources::rodones.getsize()/4;
+    int x = rand()%(800-15) + board.horOffset;
     int y = rand()%800 + TOP_MARGIN;
 
     addObject(new Collectible(this, type, sf::Vector2f(x, y)));
@@ -106,7 +106,7 @@ void LD48::spawnRandomCollectible()
 }
 
 void LD48::draw(){
-    if (gameState != playing) ui.draw();
+    if (gameState != playing and gameState != winned) ui.draw();
     else {
         board.draw();
         for(std::list<Object*>::iterator it = objects.begin(); it != objects.end(); it++)

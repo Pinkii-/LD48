@@ -7,7 +7,7 @@ Ui::Ui(LD48* g) : game(g){
 }
 
 void Ui::draw() {
-    if (currentState != playing) {
+    if (currentState != playing and currentState != winned) {
         game->getWindow()->draw(fondo);
         game->getWindow()->draw(title);
         for(unsigned i = 0; i < texts.size(); ++i) {
@@ -74,12 +74,12 @@ void Ui::changeState(state s) {
 }
 
 void Ui::setKeyPressed(sf::Keyboard::Key k) {
-    if ((k == sf::Keyboard::Up or k == sf::Keyboard::W) and currentState != credits) {
+    if ((k == sf::Keyboard::Up or k == sf::Keyboard::W) and currentState != credits and currentState != winned) {
         int aux = select;
         if (aux-1<0) aux = texts.size();
         changeSelected((aux-1)%texts.size());
     }
-    else if ((k == sf::Keyboard::Down or k == sf::Keyboard::S) and currentState != credits) changeSelected((select+1)%texts.size());
+    else if ((k == sf::Keyboard::Down or k == sf::Keyboard::S) and currentState != credits and currentState != winned) changeSelected((select+1)%texts.size());
     else if (k == sf::Keyboard::Return) {
         if (currentState == menu) {
             switch (select) {
@@ -109,6 +109,7 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
             }
         } else if (currentState == help) changeState(menu);
         else if (currentState == credits) changeState(menu);
+        else if (currentState == winned) game->init(nPlayers);
     }
 }
 
@@ -155,11 +156,12 @@ void Ui::setText() {
             }
             texts[i].first.setString(aux);
             texts[i].second.setString(aux);
-            if (currentState == winned) {
-                std::pair<sf::Text,sf::Text> aux;
-                aux.first.setString("The winner is: Player "+std::to_string(winner));
-                texts.push_back(aux);
-            }
+        }
+        if (currentState == winned) {
+            std::pair<sf::Text,sf::Text> aux;
+            aux.first.setString("The winner is  Player "+std::to_string(winner+1));
+            aux.second.setString("The winner is  Player "+std::to_string(winner+1));
+            texts.push_back(aux);
         }
     } else if (currentState == credits) {
         title.setString("Credits");
@@ -192,7 +194,7 @@ void Ui::setPositions() {
     for (unsigned i = 0; i < texts.size(); ++i) {
         sf::Color firstColor = sf::Color(0,0,0,100);
         sf::Color secondColor = sf::Color(255,255,255,255);
-        if (currentState == playing) {
+        if (currentState == playing or currentState == winned) {
             if (i%3 != 0) msf = 50;
             else msf = 70;
             firstColor = sf::Color(0,0,0,200);
@@ -221,7 +223,7 @@ void Ui::setPositions() {
         title.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/((6*1.5))));
         texts[0].first.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
         texts[0].second.setPosition(sf::Vector2f(windowSize.x/2.0f,windowSize.y/(6+2)*(5+2)));
-    } else if (currentState == playing) {
+    } else if (currentState == playing or currentState == winned) {
         sf::Vector2f position;
         for (int i = 0; i < nPlayers; ++i) {
             int bWidth = game->getBoard()->getWidth();
@@ -235,6 +237,11 @@ void Ui::setPositions() {
             texts[i*3+1].second.setPosition(sf::Vector2f(position.x-50,position.y+50));
             texts[i*3+2].first.setPosition(sf::Vector2f(position.x+60,position.y+50));
             texts[i*3+2].second.setPosition(sf::Vector2f(position.x+60,position.y+50));
+        }
+        if (currentState == winned) {
+            texts[texts.size()-1].first.setScale(1.035,1);
+            texts[texts.size()-1].first.setPosition(windowSize.x/2,windowSize.y/2);
+            texts[texts.size()-1].second.setPosition(windowSize.x/2,windowSize.y/2);
         }
     }
     else if (currentState == credits) {
