@@ -52,7 +52,7 @@ void Ui::update() {
             setPositions();
             changeSelected(5);
         } else if (currentState == playing or currentState == winned) {
-            texts.resize(nPlayers * 3);
+            if (currentState == playing) texts.resize(nPlayers * 3);
             setText();
             setPositions();
         }
@@ -125,10 +125,10 @@ int Ui::getNPlayers() {
 }
 
 void Ui::setText() {
-    for (unsigned i = 0; i < texts.size(); ++i) {
-        texts[i].first = sf::Text();
-        texts[i].second = sf::Text();
-    }
+//    for (unsigned i = 0; i < texts.size(); ++i) {
+//        texts[i].first = sf::Text();
+//        texts[i].second = sf::Text();
+//    }
     if (currentState == menu) {
         title.setString("LD48");
         texts[0].first.setString("2 Players");
@@ -149,17 +149,17 @@ void Ui::setText() {
         texts[0].first.setString("Menu");
         texts[0].second.setString("Menu");
     } else if (currentState == playing or currentState == winned) {
-        for (unsigned i = 0; i < texts.size(); ++i) {
-            std::string aux;
-            switch (i%3) {
-            case 0: aux = "Player  " + std::to_string((i/3)+1); break;
-            case 1: aux = "Points";                             break;
-            case 2: aux = "0";                                  break;
+            for (unsigned i = 0; i < texts.size(); ++i) {
+                std::string aux;
+                switch (i%3) {
+                case 0: aux = "Player  " + std::to_string((i/3)+1); break;
+                case 1: aux = "Points";                             break;
+                case 2: aux = std::to_string(game->getPlayer((i/3))->getPoints());                                  break;
+                }
+                texts[i].first.setString(aux);
+                texts[i].second.setString(aux);
             }
-            texts[i].first.setString(aux);
-            texts[i].second.setString(aux);
-        }
-        if (currentState == winned) {
+            if (currentState == winned) {
             std::pair<sf::Text,sf::Text> aux;
             aux.first.setString("The winner is  Player "+std::to_string(winner+1));
             aux.second.setString("The winner is  Player "+std::to_string(winner+1));
