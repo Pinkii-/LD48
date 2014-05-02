@@ -131,6 +131,7 @@ void Ui::setKeyPressed(sf::Keyboard::Key k) {
         else if (currentState == selectMaxPoints) game->setMaxPoints(maxPoints);
     }
     else if (k == sf::Keyboard::Space and currentState == winned) game->init(nPlayers);
+	else if (k == sf::Keyboard::Space and currentState == selectMaxPoints) game->setMaxPoints(maxPoints);
     else if (k == sf::Keyboard::Escape) {
         switch (currentState) {
         case menu:     game->getWindow()->close();  break;
