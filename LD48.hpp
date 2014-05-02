@@ -34,7 +34,7 @@ private:
 
     std::list<Object*> objects;
 
-    std::vector<dir> isKeyPressed;
+	std::vector<std::vector<dir>> isKeyPressed;
     int nPlayers;
     int maxPoints;
     float spawnTimer;
