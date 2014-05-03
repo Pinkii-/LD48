@@ -13,16 +13,15 @@ LD48::LD48(int scrwidth, int scrheight, std::string title, int style)
 LD48::~LD48() {}
 
 
-void LD48::addObject(Object* obj)
-{
+void LD48::addObject(Object* obj) {
 	objects.push_back(obj);
 }
 
 void LD48::init(int nPlayer) {
 	ui.changeState(selectMaxPoints);
 	gameState = selectMaxPoints;
+    spawnTimer = rand()%2 + 3;
 	nPlayers = nPlayer;
-	spawnTimer = rand()%2 + 3;
 
 	objects = std::list<Object*>();
 	for (int i = 0; i < nPlayers; ++i) {

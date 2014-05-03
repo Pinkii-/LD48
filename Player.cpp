@@ -1,9 +1,8 @@
 /******************************Player.cpp**********************************/
-#include "Player.hpp"
-#include "LD48.hpp"
-#include "Collectible.hpp"
-
 #include<iostream>
+#include "LD48.hpp"
+#include "Player.hpp"
+#include "Collectible.hpp"
 using namespace std;
 
 
@@ -14,8 +13,7 @@ Player::Player(int identifier, LD48* p) : Object(p, sf::Vector2f(15, 15), Resour
 	id = identifier;
     buffs = VFloat(qtt_buff, 0);
 
-    /***SPEED VALUE***/
-    speed = 180;
+    /***SPEED VALUE***/ speed = 180;
 	time_between_sprites = 0.09;
 	spriteTimeCounter = 0.0;
     digSpeed = speed*0.4;
