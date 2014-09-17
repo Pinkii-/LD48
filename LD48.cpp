@@ -27,6 +27,7 @@ void LD48::init(int nPlayer) {
 	for (int i = 0; i < nPlayers; ++i) {
 		Player* p = new Player(i, this);
 		p->position = sf::Vector2f ((window.getSize().x/2)-10*(nPlayers-1)+20*i, 230);
+		p->setColor(sf::Color(0+85*i,0+0*i,0+0*i));
 		addObject(p);
 	}
 
@@ -76,8 +77,9 @@ void LD48::update(float deltaTime){
 			spawnRandomCollectible();
 			spawnTimer = rand()%2 + 3;
 		}
-		for (int i = 0; i < nPlayers; ++i) {
-			if (getPlayer(i)->getPoints() >= maxPoints) {
+//		for (int i = 0; i < nPlayers; ++i) {
+		for (int i = 0; i < 2; ++i) {
+			if (getPlayer(i)->getPoints() + (nPlayers == 4 ? getPlayer(i+2)->getPoints() : 0) >= maxPoints) {
 				ui.win(i);
 				gameState = winned;
 				break;
@@ -316,7 +318,7 @@ Board* LD48::getBoard() {
 
 Player* LD48::getPlayer(int id){
 
-	//TODO FIX HACK
+	//TODO FIX HACK o no
 	for(std::list<Object*>::iterator it = objects.begin(); it != objects.end(); it++)
 	{
 		if(id == 0)

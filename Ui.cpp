@@ -37,6 +37,7 @@ void Ui::init() {
 
 void Ui::update() {
     if (beforeState != currentState) {
+		std::cout << currentState << std::endl;
         if (currentState == menu) {
             texts.resize(6);
             setText();
@@ -64,12 +65,13 @@ void Ui::update() {
         updateMaxPoints();
     }
     beforeState = currentState;
+
 }
 
 void Ui::updateScore() {
-    for (int i = 0; i < nPlayers; ++i) {
-        texts[i*3+2].first.setString(std::to_string(game->getPlayer(i)->getPoints()));
-        texts[i*3+2].second.setString(std::to_string(game->getPlayer(i)->getPoints()));
+	for (int i = 0; i < 2; ++i) {
+		texts[i*3+2].first.setString(std::to_string(game->getPlayer(i)->getPoints()  + (nPlayers == 4 ? game->getPlayer(i+2)->getPoints() : 0 )));
+		texts[i*3+2].second.setString(std::to_string(game->getPlayer(i)->getPoints() + (nPlayers == 4 ? game->getPlayer(i+2)->getPoints() : 0 )));
     }
 }
 
@@ -179,7 +181,7 @@ void Ui::setText() {
             switch (i%3) {
             case 0: aux = "Player  " + std::to_string((i/3)+1);                break;
             case 1: aux = "Points";                                            break;
-            case 2: aux = std::to_string(game->getPlayer((i/3))->getPoints()); break;
+			case 2: aux = std::to_string(game->getPlayer((i/3))->getPoints()); break;
             }
             texts[i].first.setString(aux);
             texts[i].second.setString(aux);

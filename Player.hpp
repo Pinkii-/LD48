@@ -27,8 +27,10 @@ class Player : public Object {
         virtual void collidedWith(Object *b);
 		//set powerup or debuf
         void setBuff(collectible b, float time);
+		void setColor(sf::Color color);
 
         int getPoints();
+
 
 	private:
 

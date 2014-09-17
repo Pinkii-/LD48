@@ -52,4 +52,6 @@ enum boardType {
     full, digged, blocked, qtt_boardType
 };
 
+dir inverseDir(dir d);
+
 #endif // UTILS_HPP

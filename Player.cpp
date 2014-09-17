@@ -18,7 +18,7 @@ Player::Player(int identifier, LD48* p) : Object(p, sf::Vector2f(15, 15), Resour
 	spriteTimeCounter = 0.0;
     digSpeed = speed*0.4;
 	walkSpeed = speed;
-    points = 0;
+	points = 0;
 	
 
     receivesCollisions = true;
@@ -44,7 +44,7 @@ void Player::collidedWith(Object *b)
         else
         {
             points += c->type - qtt_buff;
-            std::cout << points << std::endl;
+			//std::cout << points << std::endl;
         }
         b->dead = true;
     }
@@ -56,7 +56,8 @@ void Player::update(float deltaTime){
     for(unsigned int i = 0; i < buffs.size(); ++i)
         buffs[i] -= deltaTime;
 
-    dir direction = game->getDirection(id);
+	dir direction = game->getDirection(id % 2);
+	if (id > 1) direction = inverseDir(direction);
     float actSpeed = speed;
 
 	spriteTimeCounter += deltaTime;
@@ -96,7 +97,11 @@ void Player::update(float deltaTime){
 }
 
 void Player::setBuff(collectible b, float time){
-    buffs[b] = time;
+	buffs[b] = time;
+}
+
+void Player::setColor(sf::Color color) {
+	sprite.setColor(color);
 }
 
 int Player::getPoints() {
